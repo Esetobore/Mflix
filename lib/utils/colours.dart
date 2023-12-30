@@ -6,5 +6,4 @@ class Colours{
   static const palletBlue = Color(0xFF66CEEC);
   static const palletWhite = Color(0xFFFFFCFC);
   static const palletRed = Color(0xFFDA1244);
-
 }

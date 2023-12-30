@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mflix/controller/navigationbarcontroller.dart';
+import 'package:mflix/controller/navigation-bar-controller.dart';
 import 'package:mflix/screens/bookmark-screen.dart';
 import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/screens/home-screen.dart';
