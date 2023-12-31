@@ -38,7 +38,7 @@ class MainCarousel extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: GestureDetector(
             onTap: (){
-              Get.to(() => MoviesDetailsScreen(movies: snapshot.data[itemIndex]));
+              Get.to(() => MoviesDetailsScreen(movies: snapshot.data[itemIndex], ));
             },
             child: SizedBox(
               height: 300,
