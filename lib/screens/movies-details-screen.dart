@@ -227,8 +227,6 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                               padding: const EdgeInsets.only(top: 10, bottom: 10),
                               child: CarouselWidget(snapshot: snapShot),
                             );
-                          }else if (snapShot.data!.isEmpty) {
-                            return Text('No Related Movies Yet');
                           }else{
                             return const SpinKitWave(
                               color: Colours.palletRed,
