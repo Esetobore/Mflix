@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../utils/colours.dart';
+import '../widgets/explore-list-design.dart';
+
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
 
@@ -12,7 +15,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-          child: Text('Explore Screen')),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: SearchBar(
+
+                ),
+              ),
+              SizedBox(
+                height: 710,
+                  child: ExploreListWidget()
+              ),
+            ],
+          ),
+      ),
     );
   }
 }
+
+

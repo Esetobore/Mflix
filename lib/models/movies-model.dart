@@ -24,14 +24,14 @@ class MoviesModel {
   factory MoviesModel.fromJson(Map<String, dynamic> json) {
     return MoviesModel(
       id: json["id"],
-      title: json["title"],
-      backDropPath: json["backdrop_path"],
-      originalTitle: json["original_title"],
-      overview: json["overview"],
-      posterPath: json["poster_path"],
-      releaseDate: json["release_date"],
+      title: json["title"] ?? "",
+      backDropPath: json["backdrop_path"] ?? "",
+      originalTitle: json["original_title"] ?? "",
+      overview: json["overview"] ?? "",
+      posterPath: json["poster_path"] ?? "",
+      releaseDate: json["release_date"] ?? "",
       voteAverage: json["vote_average"].toDouble(),
-      genre: json["genre_ids"],
+      genre: json["genre_ids"] ?? [],
     );
   }
 }

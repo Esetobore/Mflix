@@ -24,15 +24,15 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MoviesModel>> getTrendingMoviesWeekly() async{
+      Future<List<MoviesModel>> getTopRatedMovies() async{
         final weekResponse = await http.get(Uri.parse(ApiEndPoints.baseUrl +
-        ApiEndPoints.apiPath.popularMovies +
+        ApiEndPoints.apiPath.topRatedMovies +
         ApiEndPoints.apiKey));
         if(weekResponse.statusCode == 200){
           final decodedData = json.decode(weekResponse.body)['results'] as List;
           return decodedData.map((movie) => MoviesModel.fromJson(movie)).toList();
         }else{
-          throw Exception('TrendingMoviesWeekly Failed to retrieve');
+          throw Exception('TopRatedMovies Failed to retrieve');
         }
       }
 
@@ -49,7 +49,7 @@ class HomeScreenController extends GetxController{
 
       Future<List<SeriesModel>> getLatestTvSeries() async {
         final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
-            ApiEndPoints.apiPath.latestTvSeries + ApiEndPoints.apiKey));
+            ApiEndPoints.apiPath.topRatedTvSeries + ApiEndPoints.apiKey));
         if(response.statusCode == 200){
           final decodedData = json.decode(response.body)['results']as List;
           return decodedData.map((series) => SeriesModel.fromJson(series)).toList();
@@ -79,6 +79,40 @@ class HomeScreenController extends GetxController{
           return decodeData.map((cast) => CastModel.fromJson(cast)).toList();
         }else{
           throw Exception('CastList Failed to retrieve');
+        }
+      }
+
+      Future<List<CastModel>> getSeriesCastList(int id) async{
+        final response = await http.get(Uri.parse(
+            "${ApiEndPoints.baseUrl}/tv/${id}/credits?${ApiEndPoints.apiKey}"));
+        if (response.statusCode == 200){
+          final decodeData = jsonDecode(response.body)['cast'] as List;
+
+          return decodeData.map((cast) => CastModel.fromJson(cast)).toList();
+        }else{
+          throw Exception('CastList Failed to retrieve');
+        }
+      }
+
+      Future<List<SeriesModel>> getSimilarSeries(int id) async{
+        final response = await http.get(Uri.parse(
+            "${ApiEndPoints.baseUrl}/tv/$id/recommendations?${ApiEndPoints.apiKey}"));
+        if(response.statusCode == 200){
+          final decode = jsonDecode(response.body)['results'] as List;
+          return decode.map((similar) => SeriesModel.fromJson(similar)).toList();
+        }else{
+          throw Exception('SimilarSeries Failed to retrieve');
+        }
+      }
+
+      Future<List<MoviesModel>> getSimilarMovies(int id) async{
+        final response = await http.get(Uri.parse(
+            "${ApiEndPoints.baseUrl}/movie/$id/similar?${ApiEndPoints.apiKey}"));
+        if(response.statusCode == 200){
+          final decode = jsonDecode(response.body)['results'] as List;
+          return decode.map((similar) => MoviesModel.fromJson(similar)).toList();
+        }else{
+          throw Exception('SimilarSeries Failed to retrieve');
         }
       }
 

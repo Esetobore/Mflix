@@ -106,7 +106,7 @@ class _BuildScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Popular Movies', style: TextStyle(
+                Text('Top Rated Movies', style: TextStyle(
                     fontFamily: GoogleFonts.rubik().fontFamily,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getTrendingMoviesWeekly(),
+                future: HomeScreenController().getTopRatedMovies(),
                 builder: (context, snapshot){
                   if(snapshot.hasError){
                     return Center(
@@ -180,6 +180,7 @@ class _BuildScreen extends StatelessWidget {
               ),
             ),
             //Latest Series Carousel
+            // TODO: Update Latest Series Api Endpoint to or the Text on the Screen
             const SizedBox(height: 20,),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,

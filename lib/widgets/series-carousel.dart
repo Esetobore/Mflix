@@ -1,11 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:mflix/screens/movies-details-screen.dart';
 import 'package:mflix/utils/api-endpoint.dart';
-
 import '../screens/series-details-screen.dart';
-import '../utils/colours.dart';
 
 class SeriesCarouselWidget extends StatelessWidget {
   SeriesCarouselWidget({

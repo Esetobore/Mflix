@@ -1,3 +1,4 @@
+import 'package:circular_progress_stack/circular_progress_stack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:mflix/utils/api-endpoint.dart';
 import 'package:mflix/utils/colours.dart';
 import 'package:mflix/widgets/cast-list-design.dart';
 import 'package:mflix/widgets/custom-buttons-fill.dart';
+import 'package:mflix/widgets/default-carousel.dart';
 import '../models/cast-model.dart';
 import '../models/movie-genre-model.dart';
 
@@ -25,7 +27,7 @@ class MoviesDetailsScreen extends StatefulWidget {
   State<MoviesDetailsScreen> createState() => _MoviesDetailsScreenState();
 }
 final HomeScreenController homeScreenController = Get.put(HomeScreenController());
-late final List<MovieGenreModel> movieGenre;
+late List<MovieGenreModel> movieGenre = [];
 late final List<CastModel> castList;
 
 
@@ -35,19 +37,35 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    homeScreenController.getMovieGenreList().then((genreList){
-      setState(() {
-        movieGenre = genreList;
+    if (movieGenre.isEmpty) {
+      print('Fetching genre list...');
+      homeScreenController.getMovieGenreList().then((genreList) {
+        print('Genre list fetched successfully.');
+        setState(() {
+          movieGenre = genreList;
+        });
+      }).catchError((error) {
+        print('Error fetching genre list: $error');
       });
-    });
+    } else {
+      print('Genre list already available.');
+    }
   }
-
   List getGenresNames() {
-    return widget.movies.genre
-        .map((id) => movieGenre.firstWhere((genre)
-    => genre.id == id).genreName).toList();
+    if (widget.movies.genre.isNotEmpty) {
+      return widget.movies.genre
+          .map((id) {
+        final genre = movieGenre.firstWhere(
+              (genre) => genre.id == id,
+          orElse: () => MovieGenreModel(id: 0, genreName: ' '), // Default value for unknown genre
+        );
+        return genre.genreName;
+      })
+          .toList();
+    } else {
+      return ['Unknown'];
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -116,25 +134,28 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                       ],
                     ),
                     const SizedBox(height: 12,),
-                    SingleChildScrollView(
-                      child: Text(widget.movies.overview,
-                        style: TextStyle(
-                            fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 18,
-                            color: Colours.palletWhite),),
+                    SizedBox(
+                      height: 130,
+                      child: SingleChildScrollView(
+                        child: Text(widget.movies.overview,
+                          style: TextStyle(
+                              fontFamily: GoogleFonts.rubik().fontFamily,
+                              fontSize: 17,
+                              color: Colours.palletWhite),),
+                      ),
                     ),
 
-                    const SizedBox(height: 10,),
+                    const SizedBox(height: 15,),
                     Row(
                       children: [
                         Text('Aired: ',style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 18,
+                            fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colours.palletBlue),),
                         Text(widget.movies.releaseDate,style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 18,
+                            fontSize: 17,
                             color: Colours.palletWhite),),
                       ],
                     ),
@@ -144,16 +165,36 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                       children: [
                         Text('Genre: ',style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 18,
+                            fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colours.palletRed),),
-                        Text(getGenresNames().join(', '),style: TextStyle(
-                            fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 18,
-                            color: Colours.palletWhite),)
+                        SizedBox(
+                          width: 300,
+                          child: Text(getGenresNames().join(', '),style: TextStyle(
+                              fontFamily: GoogleFonts.rubik().fontFamily,
+                              fontSize: 17,
+                              color: Colours.palletWhite),),
+                        )
                       ],
                     ),
                     const SizedBox(height: 10,),
+                     SingleGradientStackCircularProgressBar(
+                            size: 50,
+                            progressStrokeWidth: 5,
+                            backStrokeWidth: 5,
+                            startAngle: 0,
+                            mergeMode: true,
+                            maxValue: 10,
+                            backColor: Colours.palletBlack,
+                            barColores: const [Colours.palletWhite, Colours.palletBlue, Colours.palletRed],
+                            fullProgressColor: Colours.palletRed,
+                            barValue: widget.movies.voteAverage,
+                            textStyle: TextStyle(
+                                color: Colours.palletWhite,
+                                fontFamily: GoogleFonts.rubik().fontFamily,
+                                fontSize: 17,),
+                    ),
+                    const SizedBox(height: 20,),
                     FutureBuilder(
                         future: homeScreenController.getCastList(widget.movies.id),
                         builder: (context, snapshot){
@@ -162,7 +203,6 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                               child: Text("CastListBuilder: ${snapshot.error.toString()}"),
                             );
                           }else if(snapshot.hasData){
-                            print('Cast List: ${snapshot.data.toString()}');
                             return CastListWidget(snapshot: snapshot);
                           }else{
                             return const SpinKitWave(
@@ -172,6 +212,30 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                           }
                         },
                     ),
+                    const SizedBox(height: 10,),
+                    Text('More like this:',style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 17,
+                        color: Colours.palletWhite),),
+                    FutureBuilder(
+                        future: homeScreenController.getSimilarMovies(widget.movies.id),
+                        builder: (context, snapShot){
+                          if(snapShot.hasError){
+                            return Text('SimilarMoviesBuilder: ${snapShot.error.toString()}');
+                          }else if(snapShot.hasData){
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 10, bottom: 10),
+                              child: CarouselWidget(snapshot: snapShot),
+                            );
+                          }else if (snapShot.data!.isEmpty) {
+                            return Text('No Related Movies Yet');
+                          }else{
+                            return const SpinKitWave(
+                              color: Colours.palletRed,
+                              size: 50.0,
+                            );
+                          }
+                        })
                   ],
                 ),
               ),

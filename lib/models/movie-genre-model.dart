@@ -9,8 +9,8 @@ class MovieGenreModel{
 
   factory MovieGenreModel.fromJson(Map<String, dynamic> json) {
     return MovieGenreModel(
-      id: json["id"],
-      genreName: json["name"],
+      id: json["id"] ?? 'N/A',
+      genreName: json["name"] ?? 'N/A',
     );
   }
 }
