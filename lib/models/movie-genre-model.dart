@@ -1,14 +1,14 @@
-class MovieGenreModel{
+class MediaGenreModel{
   int id;
   String genreName;
 
-  MovieGenreModel({
+  MediaGenreModel({
     required this.id,
     required this.genreName,
   });
 
-  factory MovieGenreModel.fromJson(Map<String, dynamic> json) {
-    return MovieGenreModel(
+  factory MediaGenreModel.fromJson(Map<String, dynamic> json) {
+    return MediaGenreModel(
       id: json["id"] ?? 'N/A',
       genreName: json["name"] ?? 'N/A',
     );

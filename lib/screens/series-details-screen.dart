@@ -1,11 +1,9 @@
 import 'package:circular_progress_stack/circular_progress_stack.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mflix/models/series-model.dart';
-import 'package:mflix/widgets/default-carousel.dart';
+import 'package:mflix/models/media-model.dart';
 import 'package:mflix/widgets/series-carousel.dart';
 import '../controller/home-screen-controller.dart';
 import '../models/cast-model.dart';
@@ -21,13 +19,13 @@ class SeriesDetailsScreen extends StatefulWidget {
     required this.series,
   });
 
-  final SeriesModel series;
+  final MediaModel series;
 
   @override
   State<SeriesDetailsScreen> createState() => _SeriesDetailsScreenState();
 }
 final HomeScreenController homeScreenController = Get.put(HomeScreenController());
-List<MovieGenreModel> movieGenre = [];
+List<MediaGenreModel> movieGenre = [];
 List<CastModel> castList = [];
 
 class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
@@ -37,7 +35,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
   void initState() {
     super.initState();
     if (movieGenre.isEmpty) {
-      homeScreenController.getMovieGenreList().then((genreList) {
+      homeScreenController.getMediaGenreList().then((genreList) {
         setState(() {
           movieGenre = genreList;
         });
@@ -55,7 +53,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
           .map((id) {
         final genre = movieGenre.firstWhere(
               (genre) => genre.id == id,
-          orElse: () => MovieGenreModel(id: 0, genreName: ' '), // Default value for unknown genre
+          orElse: () => MediaGenreModel(id: 0, genreName: ' '), // Default value for unknown genre
         );
         return genre.genreName;
       })
@@ -108,7 +106,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                       child: SizedBox(
                         width: 300,
                         child: Text(
-                          widget.series.originalName,
+                          widget.series.originalTitle,
                           style: TextStyle(
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontWeight: FontWeight.bold,
@@ -152,7 +150,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colours.palletBlue),),
-                        Text(widget.series.firstAirDate,style: TextStyle(
+                        Text(widget.series.releaseDate,style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
                             color: Colours.palletWhite),),

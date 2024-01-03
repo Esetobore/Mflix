@@ -179,14 +179,13 @@ class _BuildScreen extends StatelessWidget {
                 }
               ),
             ),
-            //Latest Series Carousel
-            // TODO: Update Latest Series Api Endpoint to or the Text on the Screen
+            //Top Rated Series Carousel
             const SizedBox(height: 20,),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Latest Series', style: TextStyle(
+                Text('Top Rated Series', style: TextStyle(
                     fontFamily: GoogleFonts.rubik().fontFamily,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

@@ -4,7 +4,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mflix/controller/home-screen-controller.dart';
-import 'package:mflix/models/movies-model.dart';
+import 'package:mflix/models/media-model.dart';
+import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 import 'package:mflix/utils/colours.dart';
 import 'package:mflix/widgets/cast-list-design.dart';
@@ -20,14 +21,14 @@ class MoviesDetailsScreen extends StatefulWidget {
     required this.movies,
   });
 
-  final MoviesModel movies;
+  final MediaModel movies;
 
 
   @override
   State<MoviesDetailsScreen> createState() => _MoviesDetailsScreenState();
 }
 final HomeScreenController homeScreenController = Get.put(HomeScreenController());
-late List<MovieGenreModel> movieGenre = [];
+late List<MediaGenreModel> movieGenre = [];
 late final List<CastModel> castList;
 
 
@@ -39,7 +40,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
     super.initState();
     if (movieGenre.isEmpty) {
       print('Fetching genre list...');
-      homeScreenController.getMovieGenreList().then((genreList) {
+      homeScreenController.getMediaGenreList().then((genreList) {
         print('Genre list fetched successfully.');
         setState(() {
           movieGenre = genreList;
@@ -57,7 +58,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
           .map((id) {
         final genre = movieGenre.firstWhere(
               (genre) => genre.id == id,
-          orElse: () => MovieGenreModel(id: 0, genreName: ' '), // Default value for unknown genre
+          orElse: () => MediaGenreModel(id: 0, genreName: ' '), // Default value for unknown genre
         );
         return genre.genreName;
       })
@@ -126,7 +127,8 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         IconButtonWithText(
                             icon: Icons.play_circle_filled_rounded,
                             text: 'Play',
-                            onPressed: (){}),
+                            onPressed: (){
+                            }),
                         IconButtonWithText(
                             icon: Icons.bookmark_add,
                             text: 'Add to List',
