@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mflix/controller/home-screen-controller.dart';
 import 'package:mflix/models/media-model.dart';
-import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 import 'package:mflix/utils/colours.dart';
 import 'package:mflix/widgets/cast-list-design.dart';
@@ -28,7 +27,7 @@ class MoviesDetailsScreen extends StatefulWidget {
   State<MoviesDetailsScreen> createState() => _MoviesDetailsScreenState();
 }
 final HomeScreenController homeScreenController = Get.put(HomeScreenController());
-late List<MediaGenreModel> movieGenre = [];
+List<MediaGenreModel> movieGenre = [];
 late final List<CastModel> castList;
 
 
@@ -39,17 +38,13 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
   void initState() {
     super.initState();
     if (movieGenre.isEmpty) {
-      print('Fetching genre list...');
       homeScreenController.getMediaGenreList().then((genreList) {
-        print('Genre list fetched successfully.');
         setState(() {
           movieGenre = genreList;
         });
       }).catchError((error) {
-        print('Error fetching genre list: $error');
+        throw ('Error fetching genre list: $error');
       });
-    } else {
-      print('Genre list already available.');
     }
   }
   List getGenresNames() {
@@ -155,7 +150,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colours.palletBlue),),
-                        Text(widget.movies.releaseDate,style: TextStyle(
+                        Text(widget.movies.releaseDate.toString(),style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
                             color: Colours.palletWhite),),

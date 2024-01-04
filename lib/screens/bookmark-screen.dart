@@ -12,7 +12,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-          child: Text('My Bookmarks')
+          child: Center(child: Text('My Bookmarks'))
       ),
     );
   }
