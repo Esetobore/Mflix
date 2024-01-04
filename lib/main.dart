@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mflix/screens/navbar-screen.dart';
+import 'package:mflix/widgets/bottom-navbar-widget.dart';
 import 'package:mflix/utils/colours.dart';
 import 'screens/home-screen.dart';
 

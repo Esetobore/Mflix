@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
 import 'package:mflix/utils/api-endpoint.dart';
-
 import '../models/media-model.dart';
 
 
@@ -39,14 +37,13 @@ class ExploreScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>>getSearchResult() async{
-        final query = "barbie";
+      Future<List<MediaModel>>getSearchResult(String query) async{
         final response = await http.get(Uri.parse(
           "${ApiEndPoints.baseUrl}${ApiEndPoints.apiPath.search}${ApiEndPoints.apiKey}&query=$query"
         ));
         if(response.statusCode == 200){
           final decodeData = jsonDecode(response.body)["results"] as List;
-          print(decodeData.map((search) => MediaModel.fromJson(search)).toList());
+          searchController.clear();
           return decodeData.map((search) => MediaModel.fromJson(search)).toList();
         }else{
           throw Exception("SearchResult Failed to Retrieve");

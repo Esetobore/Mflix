@@ -1,12 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:mflix/controller/explore-screen-controller.dart';
-import 'package:mflix/controller/home-screen-controller.dart';
 import 'package:mflix/screens/search-result-screen.dart';
-
 import '../utils/colours.dart';
 import '../widgets/explore-list-design.dart';
 
@@ -28,11 +24,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
           color: Colours.palletRed,
           size: 50.0,
         ) )
-        : const exploreScreen());
+        : const ExploreScreenBuild());
   }
 }
-class exploreScreen extends StatelessWidget {
-  const exploreScreen({
+class ExploreScreenBuild extends StatelessWidget {
+  const ExploreScreenBuild({
     super.key,
   });
 
@@ -42,18 +38,18 @@ class exploreScreen extends StatelessWidget {
       body: SafeArea(
           child: Column(
             children: [
-              ///TODO: Solution to the search bar implement the future builder then
-              /// call the searchbar inside the snapshot.hasdata instance
-              /// Check Notes for further information
                Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: SearchBar(
+                  hintText: "Search....",
                   controller: exploreScreenController.searchController,
-                  hintText: "Search......",
+                  onSubmitted: (String value) {
+                    Get.to(() => SearchResultScreen(value: value,));
+                  },
                 ),
               ),
 
-              Expanded(child: ExploreListWidget()),
+              const Expanded(child: ExploreListWidget()),
             ],
           ),
       ),

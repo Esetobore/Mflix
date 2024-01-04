@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:mflix/controller/explore-screen-controller.dart';
 import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/screens/series-details-screen.dart';
 
@@ -12,7 +10,7 @@ import '../utils/api-endpoint.dart';
 import '../utils/colours.dart';
 
 class ExploreListWidget extends StatelessWidget {
-   ExploreListWidget({
+   const ExploreListWidget({
     super.key,
   });
 

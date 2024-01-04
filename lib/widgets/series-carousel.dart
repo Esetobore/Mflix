@@ -15,7 +15,7 @@ class SeriesCarouselWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CarouselSlider.builder(
-        itemCount: snapshot.data.length ?? 0,
+        itemCount: snapshot.data?.length ?? 0,
         options: CarouselOptions(
           height: 200,
           viewportFraction: 0.4,

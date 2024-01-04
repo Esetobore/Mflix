@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:mflix/screens/movies-details-screen.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 
-import '../utils/colours.dart';
-
 class CarouselWidget extends StatelessWidget {
    CarouselWidget({
     super.key,

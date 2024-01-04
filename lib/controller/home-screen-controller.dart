@@ -69,7 +69,7 @@ class HomeScreenController extends GetxController{
 
       Future<List<CastModel>> getCastList(int id) async{
         final response = await http.get(Uri.parse(
-            "${ApiEndPoints.baseUrl}/movie/${id}/credits?${ApiEndPoints.apiKey}"));
+            "${ApiEndPoints.baseUrl}/movie/$id/credits?${ApiEndPoints.apiKey}"));
         if (response.statusCode == 200){
           final decodeData = jsonDecode(response.body)['cast'] as List;
 
@@ -92,7 +92,7 @@ class HomeScreenController extends GetxController{
 
       Future<List<CastModel>> getSeriesCastList(int id) async{
         final response = await http.get(Uri.parse(
-            "${ApiEndPoints.baseUrl}/tv/${id}/credits?${ApiEndPoints.apiKey}"));
+            "${ApiEndPoints.baseUrl}/tv/$id/credits?${ApiEndPoints.apiKey}"));
         if (response.statusCode == 200){
           final decodeData = jsonDecode(response.body)['cast'] as List;
 

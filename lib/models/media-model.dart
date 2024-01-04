@@ -1,13 +1,13 @@
 class MediaModel {
   int id;
-  String title; // Use title for both movies and series
+  String title;
   String backDropPath;
-  String originalTitle; // Use originalTitle for both movies and series
+  String originalTitle;
   String overview;
   String posterPath;
-  List<String> mediaType;
-  String releaseDate; // Assuming it applies to both movies and series
+  String releaseDate;
   double voteAverage;
+  String mediaType;
   List<dynamic> genre;
 
   MediaModel({
@@ -25,16 +25,16 @@ class MediaModel {
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
     return MediaModel(
-      id: json["id"] ?? 0, // Provide a default value if "id" is null
-      title: json["title"] ?? json["name"] ?? "", // Use title for both movies and series
+      id: json["id"] ?? 0,
+      title: json["title"] ?? json["name"] ?? "",
       backDropPath: json["backdrop_path"] ?? "",
-      originalTitle: json["original_title"] ?? json["name"] ?? "", // Use originalTitle for both movies and series
+      originalTitle: json["original_title"] ?? json["name"] ?? "",
       overview: json["overview"] ?? "",
       posterPath: json["poster_path"] ?? "",
-      releaseDate: json["release_date"] ?? json["first_air_date"] ?? "", // Assuming it applies to both movies and series
+      releaseDate: json["release_date"] ?? json["first_air_date"] ?? "",
       voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
       genre: json["genre_ids"] ?? [],
-      mediaType: json[""] ?? ["movie"] ?? ["tv"]
+      mediaType: json["media_type"] ?? "",
     );
   }
 

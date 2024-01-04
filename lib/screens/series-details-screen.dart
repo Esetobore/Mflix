@@ -40,10 +40,8 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
           movieGenre = genreList;
         });
       }).catchError((error) {
-          print('Error fetching genre list: $error');
+          throw ('Error fetching genre list: $error');
       });
-    } else {
-        print('Genre list already available.');
     }
   }
 
