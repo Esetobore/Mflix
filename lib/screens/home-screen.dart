@@ -23,9 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => homeScreenController.isLoading.value
-          ? const Center(
+          ? Center(
           child: SpinKitWave(
-            color: Colours.palletRed,
+            color: Theme.of(context).colorScheme.secondary,
             size: 50.0,
           ) )
           : const _BuildScreen()),
@@ -63,7 +63,7 @@ class _BuildScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
-                            color: Colours.palletWhite
+                            color: Theme.of(context).colorScheme.primary
                         ),),
                       ),
                       Padding(
@@ -71,7 +71,7 @@ class _BuildScreen extends StatelessWidget {
                         child: Text('Movie Magic Awaits', style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 13,
-                            color: Colours.palletWhite
+                            color: Theme.of(context).colorScheme.primary
                         ),),
                       )
                     ],
@@ -91,8 +91,8 @@ class _BuildScreen extends StatelessWidget {
                   } else if (snapshot.hasData) {
                     return  MainCarousel(snapshot: snapshot,);
                   } else {
-                    return const Center(child: SpinKitWave(
-                      color: Colours.palletRed,
+                    return Center(child: SpinKitWave(
+                      color: Theme.of(context).colorScheme.secondary,
                       size: 50.0,
                     ));
                   }
@@ -102,23 +102,26 @@ class _BuildScreen extends StatelessWidget {
 
             //Trending Movies Carousel
             const SizedBox(height: 20,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Top Rated Movies', style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colours.palletWhite
-                ),),
-                Text('See all', style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Colours.palletBlue
-                ),),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Top Rated Movies', style: TextStyle(
+                      fontFamily: GoogleFonts.rubik().fontFamily,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary
+                  ),),
+                  Text('See all', style: TextStyle(
+                      fontFamily: GoogleFonts.rubik().fontFamily,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colours.palletBlue
+                  ),),
+                ],
+              ),
             ),
             const SizedBox(height: 10,),
             SizedBox(
@@ -132,8 +135,8 @@ class _BuildScreen extends StatelessWidget {
                   }else if (snapshot.hasData){
                     return CarouselWidget(snapshot: snapshot);
                   } else {
-                    return const Center(child: SpinKitWave(
-                      color: Colours.palletRed,
+                    return Center(child: SpinKitWave(
+                      color: Theme.of(context).colorScheme.secondary,
                       size: 50.0,
                     ),);
                   }
@@ -143,23 +146,26 @@ class _BuildScreen extends StatelessWidget {
             ),
             //Latest Moves Carousel
             const SizedBox(height: 20,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Upcoming Movies', style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colours.palletWhite
-                ),),
-                Text('See all', style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Colours.palletBlue
-                ),),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Upcoming Movies', style: TextStyle(
+                      fontFamily: GoogleFonts.rubik().fontFamily,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary
+                  ),),
+                  Text('See all', style: TextStyle(
+                      fontFamily: GoogleFonts.rubik().fontFamily,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colours.palletBlue
+                  ),),
+                ],
+              ),
             ),
             const SizedBox(height: 10,),
             SizedBox(
@@ -171,8 +177,8 @@ class _BuildScreen extends StatelessWidget {
                   }else if (snapshot.hasData){
                     return CarouselWidget(snapshot: snapshot);
                   } else{
-                    return const Center(child: SpinKitWave(
-                      color: Colours.palletRed,
+                    return Center(child: SpinKitWave(
+                      color: Theme.of(context).colorScheme.secondary,
                       size: 50.0,
                     ),);
                   }
@@ -181,23 +187,26 @@ class _BuildScreen extends StatelessWidget {
             ),
             //Top Rated Series Carousel
             const SizedBox(height: 20,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Top Rated Series', style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colours.palletWhite
-                ),),
-                Text('See all', style: TextStyle(
-                    fontFamily: GoogleFonts.rubik().fontFamily,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Colours.palletBlue
-                ),),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Top Rated Series', style: TextStyle(
+                      fontFamily: GoogleFonts.rubik().fontFamily,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary
+                  ),),
+                  Text('See all', style: TextStyle(
+                      fontFamily: GoogleFonts.rubik().fontFamily,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colours.palletBlue
+                  ),),
+                ],
+              ),
             ),
             const SizedBox(height: 10,),
             SizedBox(
@@ -209,8 +218,8 @@ class _BuildScreen extends StatelessWidget {
                     }else if (snapshot.hasData){
                       return SeriesCarouselWidget(snapshot: snapshot);
                     } else{
-                      return const Center(child: SpinKitWave(
-                        color: Colours.palletRed,
+                      return  Center(child: SpinKitWave(
+                        color:Theme.of(context).colorScheme.secondary,
                         size: 50.0,
                       ),);
                     }

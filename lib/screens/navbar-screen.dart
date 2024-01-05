@@ -5,7 +5,7 @@ import 'package:mflix/controller/navigation-bar-controller.dart';
 import 'package:mflix/screens/bookmark-screen.dart';
 import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/screens/home-screen.dart';
-import 'package:mflix/screens/profile-screen.dart';
+import 'package:mflix/screens/more-screen.dart';
 
 import '../utils/colours.dart';
 
@@ -35,7 +35,7 @@ class NavBarScreen extends StatelessWidget {
             onTap: navigationBarController.changeTabIndex,
             currentIndex: navigationBarController.tabIndex.value,
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Theme.of(context).colorScheme.onSecondary,
             unselectedItemColor: Colours.palletBlue,
             selectedItemColor: Colours.palletRed,
             unselectedLabelStyle: unselectedLabelStyle,
@@ -57,8 +57,8 @@ class NavBarScreen extends StatelessWidget {
                 backgroundColor: Colours.palletBlue, // Set your color for unselected state
               ),
               BottomNavigationBarItem(
-                icon:  Icon(Icons.person_rounded),
-                label: 'Profile',
+                icon:  Icon(Icons.more_horiz_rounded),
+                label: 'More',
                 backgroundColor: Colours.palletBlue, // Set your color for unselected state
               ),
             ],
@@ -80,7 +80,7 @@ class NavBarScreen extends StatelessWidget {
               HomeScreen(),
               ExploreScreen(),
               BookMarkScreen(),
-              ProfileScreen(),
+              MoreScreen(),
             ],
           )),
         ));

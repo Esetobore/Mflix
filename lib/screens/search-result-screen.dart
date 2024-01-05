@@ -37,7 +37,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             Text("<${widget.value}>", style: TextStyle(
                 fontFamily: GoogleFonts.rubik().fontFamily,
                 fontSize: 20,
-                color: Colours.palletWhite
+                color: Theme.of(context).colorScheme.primary
             ),),
             const SizedBox(height: 10,),
         FutureBuilder(
@@ -85,13 +85,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text(
-                                "Media Type: ${media.mediaType}",
-                                style: const TextStyle(
-                                  color: Colours.palletWhite,
-                                  fontSize: 14,
-                                ),
-                              ),
+                              // Text(
+                              //   "Media Type: ${media.mediaType}",
+                              //   style: const TextStyle(
+                              //     color: Colours.palletWhite,
+                              //     fontSize: 14,
+                              //   ),
+                              // ),
                             ],
                           ),
                         );

@@ -19,9 +19,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return  Obx(() => exploreScreenController.isLoading.value
-        ? const Center(
+        ? Center(
         child: SpinKitWave(
-          color: Colours.palletRed,
+          color: Theme.of(context).colorScheme.secondary,
           size: 50.0,
         ) )
         : const ExploreScreenBuild());
@@ -35,6 +35,7 @@ class ExploreScreenBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
           child: Column(
             children: [

@@ -26,7 +26,7 @@ class MoviesDetailsScreen extends StatefulWidget {
   @override
   State<MoviesDetailsScreen> createState() => _MoviesDetailsScreenState();
 }
-final HomeScreenController homeScreenController = Get.put(HomeScreenController());
+final HomeScreenController homeScreenController = Get.find();
 List<MediaGenreModel> movieGenre = [];
 late final List<CastModel> castList;
 
@@ -66,6 +66,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
           SizedBox(
@@ -111,7 +112,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: Colours.palletWhite),
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                     ),
@@ -138,7 +139,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                           style: TextStyle(
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontSize: 17,
-                              color: Colours.palletWhite),),
+                              color: Theme.of(context).colorScheme.primary),),
                       ),
                     ),
 
@@ -153,7 +154,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         Text(widget.movies.releaseDate.toString(),style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
-                            color: Colours.palletWhite),),
+                            color: Theme.of(context).colorScheme.primary),),
                       ],
                     ),
 
@@ -170,7 +171,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                           child: Text(getGenresNames().join(', '),style: TextStyle(
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontSize: 17,
-                              color: Colours.palletWhite),),
+                              color: Theme.of(context).colorScheme.primary),),
                         )
                       ],
                     ),
@@ -187,7 +188,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                             fullProgressColor: Colours.palletRed,
                             barValue: widget.movies.voteAverage,
                             textStyle: TextStyle(
-                                color: Colours.palletWhite,
+                                color: Theme.of(context).colorScheme.primary,
                                 fontFamily: GoogleFonts.rubik().fontFamily,
                                 fontSize: 17,),
                     ),
@@ -202,8 +203,8 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                           }else if(snapshot.hasData){
                             return CastListWidget(snapshot: snapshot);
                           }else{
-                            return const SpinKitWave(
-                              color: Colours.palletRed,
+                            return SpinKitWave(
+                              color: Theme.of(context).colorScheme.secondary,
                               size: 50.0,
                             );
                           }
@@ -225,8 +226,8 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                               child: CarouselWidget(snapshot: snapShot),
                             );
                           }else{
-                            return const SpinKitWave(
-                              color: Colours.palletRed,
+                            return SpinKitWave(
+                              color: Theme.of(context).colorScheme.secondary,
                               size: 50.0,
                             );
                           }

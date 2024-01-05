@@ -19,7 +19,7 @@ class IconButtonWithText extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colours.palletTransparent,
+        backgroundColor: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),

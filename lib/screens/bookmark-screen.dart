@@ -10,8 +10,9 @@ class BookMarkScreen extends StatefulWidget {
 class _BookMarkScreenState extends State<BookMarkScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: const SafeArea(
           child: Center(child: Text('My Bookmarks'))
       ),
     );
