@@ -38,7 +38,7 @@ class CastListWidget extends StatelessWidget {
                                 textAlign: TextAlign.center, style: TextStyle(
                                     fontFamily: GoogleFonts.rubik().fontFamily,
                                     fontSize: 13,
-                                    color: Colours.palletWhite)),
+                                    color: Theme.of(context).colorScheme.primary)),
                           ),
                           SizedBox(
                             width: 120,
@@ -46,7 +46,7 @@ class CastListWidget extends StatelessWidget {
                                 textAlign: TextAlign.center, style: TextStyle(
                                     fontFamily: GoogleFonts.rubik().fontFamily,
                                     fontSize: 13,
-                                    color: Colours.palletWhite)),
+                                    color: Theme.of(context).colorScheme.primary)),
                           ),
                         ],
                       )

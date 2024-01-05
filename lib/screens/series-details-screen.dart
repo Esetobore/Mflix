@@ -24,7 +24,7 @@ class SeriesDetailsScreen extends StatefulWidget {
   @override
   State<SeriesDetailsScreen> createState() => _SeriesDetailsScreenState();
 }
-final HomeScreenController homeScreenController = Get.put(HomeScreenController());
+final HomeScreenController homeScreenController = Get.find();
 List<MediaGenreModel> movieGenre = [];
 List<CastModel> castList = [];
 
@@ -109,7 +109,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              color: Colours.palletWhite),
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                     ),
@@ -136,7 +136,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                           style: TextStyle(
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontSize: 17,
-                              color: Colours.palletWhite),),
+                              color: Theme.of(context).colorScheme.primary),),
                       ),
                     ),
 
@@ -151,7 +151,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                         Text(widget.series.releaseDate,style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
-                            color: Colours.palletWhite),),
+                            color: Theme.of(context).colorScheme.primary),),
                       ],
                     ),
                     const SizedBox(height: 10,),
@@ -167,7 +167,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                           child: Text(getGenresNames().join(' '),style: TextStyle(
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontSize: 17,
-                              color: Colours.palletWhite),),
+                              color: Theme.of(context).colorScheme.primary),),
                         )
                       ],
                     ),
@@ -184,7 +184,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                       fullProgressColor: Colours.palletRed,
                       barValue: widget.series.voteAverage,
                       textStyle: TextStyle(
-                        color: Colours.palletWhite,
+                        color: Theme.of(context).colorScheme.primary,
                         fontFamily: GoogleFonts.rubik().fontFamily,
                         fontSize: 20,),
                     ),
@@ -199,8 +199,8 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                         }else if(snapshot.hasData){
                           return CastListWidget(snapshot: snapshot);
                         }else{
-                          return const SpinKitWave(
-                            color: Colours.palletRed,
+                          return SpinKitWave(
+                            color: Theme.of(context).colorScheme.secondary,
                             size: 50.0,
                           );
                         }
@@ -210,7 +210,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                     Text('More like this:',style: TextStyle(
                     fontFamily: GoogleFonts.rubik().fontFamily,
                     fontSize: 17,
-                    color: Colours.palletWhite),),
+                    color: Theme.of(context).colorScheme.primary),),
                     FutureBuilder(
                         future: homeScreenController.getSimilarSeries(widget.series.id),
                         builder: (context, snapShot){
@@ -222,8 +222,8 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                               child: SeriesCarouselWidget(snapshot: snapShot),
                             );
                           }else{
-                            return const SpinKitWave(
-                              color: Colours.palletRed,
+                            return SpinKitWave(
+                              color: Theme.of(context).colorScheme.secondary,
                               size: 50.0,
                             );
                           }
