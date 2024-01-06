@@ -26,6 +26,9 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
   void _deleteMovie(int docId) async {
     await SqlDatabaseHelper.deleteMovie(docId);
     bookmarkController.fetchMovies();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Removed From List')),
+    );
   }
 
 
