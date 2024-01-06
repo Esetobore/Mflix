@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mflix/models/media-model.dart';
 import 'package:mflix/widgets/series-carousel.dart';
+import '../controller/bookmark-screen-controller.dart';
 import '../controller/home-screen-controller.dart';
 import '../models/cast-model.dart';
 import '../models/movie-genre-model.dart';
+import '../sql_helper.dart';
 import '../utils/api-endpoint.dart';
 import '../utils/colours.dart';
 import '../widgets/cast-list-design.dart';
@@ -60,6 +62,18 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
       return ['Unknown'];
     }
   }
+
+  void _saveToDatabase() async {
+    final title = widget.series.title;
+    final posterPath = widget.series.posterPath;
+    int insertId = await SqlDatabaseHelper.insertMovie(title, posterPath);
+    print("Database Save id: $insertId");
+    bookmarkController.fetchMovies();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Added to List')),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +139,9 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                         IconButtonWithText(
                             icon: Icons.bookmark_add,
                             text: 'Add to List',
-                            onPressed: (){})
+                            onPressed: (){
+                              _saveToDatabase();
+                            })
                       ],
                     ),
                     const SizedBox(height: 12,),

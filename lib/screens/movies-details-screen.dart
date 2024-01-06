@@ -10,8 +10,10 @@ import 'package:mflix/utils/colours.dart';
 import 'package:mflix/widgets/cast-list-design.dart';
 import 'package:mflix/widgets/custom-buttons-fill.dart';
 import 'package:mflix/widgets/default-carousel.dart';
+import '../controller/bookmark-screen-controller.dart';
 import '../models/cast-model.dart';
 import '../models/movie-genre-model.dart';
+import 'package:mflix/sql_helper.dart';
 
 class MoviesDetailsScreen extends StatefulWidget {
 
@@ -32,7 +34,7 @@ late final List<CastModel> castList;
 
 
 class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
-
+  List<Map<String, dynamic>> moviesList = [];
 
   @override
   void initState() {
@@ -61,6 +63,16 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
     } else {
       return ['Unknown'];
     }
+  }
+
+  void _saveToDatabase() async {
+    final title = widget.movies.title;
+    final posterPath = widget.movies.posterPath;
+    int insertId = await SqlDatabaseHelper.insertMovie(title, posterPath);
+    bookmarkController.fetchMovies();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Added to List')),
+    );
   }
 
   @override
@@ -128,7 +140,8 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         IconButtonWithText(
                             icon: Icons.bookmark_add,
                             text: 'Add to List',
-                            onPressed: (){})
+                            onPressed: _saveToDatabase,
+                        )
                       ],
                     ),
                     const SizedBox(height: 12,),
@@ -151,7 +164,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colours.palletBlue),),
-                        Text(widget.movies.releaseDate.toString(),style: TextStyle(
+                        Text(widget.movies.mediaType.toString(),style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
                             color: Theme.of(context).colorScheme.primary),),
