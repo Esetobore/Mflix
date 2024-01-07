@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/screens/series-details-screen.dart';
-
 import '../screens/movies-details-screen.dart';
 import '../utils/api-endpoint.dart';
 import '../utils/colours.dart';
@@ -23,8 +22,7 @@ class ExploreListWidget extends StatelessWidget {
                future: exploreScreenController.getPopularMovies(),
                builder: (context, snapshot) {
                  if(snapshot.hasError){
-                   return Text('Error: ${snapshot.error}');
-                 }
+                   return const Text("No Internet Connection Found");}
                  if (snapshot.hasData){
                    return ListView.builder(
                      scrollDirection: Axis.vertical,
@@ -72,7 +70,7 @@ class ExploreListWidget extends StatelessWidget {
               future: exploreScreenController.getPopularSeries(),
               builder: (context, snapshot) {
                 if(snapshot.hasError){
-                  return Text('Error: ${snapshot.error}');
+                  return const Text('Please Reload App');
                 }
                 if (snapshot.hasData){
                   return ListView.builder(

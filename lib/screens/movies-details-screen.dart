@@ -164,7 +164,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colours.palletBlue),),
-                        Text(widget.movies.mediaType.toString(),style: TextStyle(
+                        Text(widget.movies.releaseDate.toString(),style: TextStyle(
                             fontFamily: GoogleFonts.rubik().fontFamily,
                             fontSize: 17,
                             color: Theme.of(context).colorScheme.primary),),
@@ -210,9 +210,10 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         future: homeScreenController.getCastList(widget.movies.id),
                         builder: (context, snapshot){
                           if(snapshot.hasError){
-                            return Center(
-                              child: Text("CastListBuilder: ${snapshot.error.toString()}"),
-                            );
+                            print(snapshot.error.toString());
+                              return const Center(
+                                child: Text("No Internet Connection Found\n Please Reload Page"),
+                              );
                           }else if(snapshot.hasData){
                             return CastListWidget(snapshot: snapshot);
                           }else{
@@ -232,7 +233,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         future: homeScreenController.getSimilarMovies(widget.movies.id),
                         builder: (context, snapShot){
                           if(snapShot.hasError){
-                            return Text('SimilarMoviesBuilder: ${snapShot.error.toString()}');
+                            return const Text('No Internet Connection Found\n Please Reload Page');
                           }else if(snapShot.hasData){
                             return Padding(
                               padding: const EdgeInsets.only(top: 10, bottom: 10),

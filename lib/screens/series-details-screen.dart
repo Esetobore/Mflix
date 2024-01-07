@@ -210,7 +210,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                       builder: (context, snapshot){
                         if(snapshot.hasError){
                           return Center(
-                            child: Text("CastListBuilder: ${snapshot.error.toString()}"),
+                            child: Text("No Internet Connection Found\n Please Reload Page"),
                           );
                         }else if(snapshot.hasData){
                           return CastListWidget(snapshot: snapshot);
@@ -231,7 +231,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                         future: homeScreenController.getSimilarSeries(widget.series.id),
                         builder: (context, snapShot){
                           if(snapShot.hasError){
-                            return Text('SimilarSeriesBuilder: ${snapShot.error.toString()}');
+                            return Text('No Internet Connection Found\n Please Reload Page');
                           }else if(snapShot.hasData){
                             return Padding(
                               padding: const EdgeInsets.only(top: 10, bottom: 10),

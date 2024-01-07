@@ -44,7 +44,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           future: exploreScreenController.getSearchResult(widget.value),
           builder: (context, snapshot){
             if(snapshot.hasError){
-              return Text('SearchBarBuilder: ${snapshot.error}');
+              return const Text('No Internet Connection Found');
             }
             if(snapshot.hasData){
               return Column(
@@ -85,13 +85,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              // Text(
-                              //   "Media Type: ${media.mediaType}",
-                              //   style: const TextStyle(
-                              //     color: Colours.palletWhite,
-                              //     fontSize: 14,
-                              //   ),
-                              // ),
                             ],
                           ),
                         );
