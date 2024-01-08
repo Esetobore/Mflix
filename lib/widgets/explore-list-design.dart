@@ -15,78 +15,83 @@ class ExploreListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: FutureBuilder(
-               future: exploreScreenController.getPopularMovies(),
-               builder: (context, snapshot) {
-                 if(snapshot.hasError){
-                   return const Text("No Internet Connection Found");}
-                 if (snapshot.hasData){
-                   return ListView.builder(
-                     scrollDirection: Axis.vertical,
-                     itemCount: snapshot.data?.length ?? 0,
-                     physics: const NeverScrollableScrollPhysics(),
-                     itemBuilder: (context, index) {
-                       final posterPath = snapshot.data?[index].posterPath;
-                       return Padding(
-                         padding: const EdgeInsets.only(top: 5, bottom: 10,left: 10),
-                         child: Row(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Padding(
-                               padding: const EdgeInsets.only(left: 10,right: 5),
-                               child: GestureDetector(
-                                 onTap: (){
-                                   Get.to(() => MoviesDetailsScreen(movies: snapshot.data![index]));
-                                 },
-                                 child: SizedBox(
-                                     height: 200,
-                                     width: 150,
-                                     child: Image.network(
-                                       '${ApiEndPoints.imagePath}$posterPath',
-                                       filterQuality: FilterQuality.medium,
-                                       fit: BoxFit.cover,
-                                     )),
-                               ),
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: SizedBox(
+              width: 180,
+              height: 4300,
+              child: FutureBuilder(
+                   future: exploreScreenController.getPopularMovies(),
+                   builder: (context, snapshot) {
+                     if(snapshot.hasError){
+                       return const Text("No Internet Connection Found");}
+                     if (snapshot.hasData){
+                       return ListView.builder(
+                         scrollDirection: Axis.vertical,
+                         itemCount: snapshot.data?.length ?? 0,
+                         physics: const NeverScrollableScrollPhysics(),
+                         itemBuilder: (context, index) {
+                           final posterPath = snapshot.data?[index].posterPath;
+                           return Padding(
+                             padding: const EdgeInsets.only(top: 5, bottom: 10,left: 10),
+                             child: Row(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 GestureDetector(
+                                   onTap: (){
+                                     Get.to(() => MoviesDetailsScreen(movies: snapshot.data![index]));
+                                   },
+                                   child: SizedBox(
+                                       height: 200,
+                                       width: 150,
+                                       child: Image.network(
+                                         '${ApiEndPoints.imagePath}$posterPath',
+                                         filterQuality: FilterQuality.medium,
+                                         fit: BoxFit.cover,
+                                       )),
+                                 ),
+                               ],
                              ),
-                           ],
-                         ),
+                           );
+                         },
                        );
-                     },
-                   );
-                 }else{
-                   return const SpinKitWave(
-                     color: Colours.palletRed,
-                     size: 50.0,
-                   );
-                 }
-               }
+                     }else{
+                       return const SpinKitWave(
+                         color: Colours.palletRed,
+                         size: 50.0,
+                       );
+                     }
+                   }
+              ),
+            ),
           ),
-        ),
-        Expanded(
-          child: FutureBuilder(
-              future: exploreScreenController.getPopularSeries(),
-              builder: (context, snapshot) {
-                if(snapshot.hasError){
-                  return const Text('Please Reload App');
-                }
-                if (snapshot.hasData){
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: snapshot.data?.length ?? 0,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final posterPath = snapshot.data?[index].posterPath;
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 5, bottom: 10,left: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10,right: 5),
-                              child: GestureDetector(
+          SizedBox(
+            width: 200,
+            height: 4300,
+            child: FutureBuilder(
+                future: exploreScreenController.getPopularSeries(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasError){
+                    return const Text('Please Reload App');
+                  }
+                  if (snapshot.hasData){
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: snapshot.data?.length ?? 0,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final posterPath = snapshot.data?[index].posterPath;
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 5, bottom: 10,left: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
                                 onTap: (){
                                   Get.to(() => SeriesDetailsScreen(series: snapshot.data![index]));
                                 },
@@ -99,22 +104,22 @@ class ExploreListWidget extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     )),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }else{
-                  return const SpinKitWave(
-                    color: Colours.palletRed,
-                    size: 50.0,
-                  );
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }else{
+                    return const SpinKitWave(
+                      color: Colours.palletRed,
+                      size: 50.0,
+                    );
+                  }
                 }
-              }
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

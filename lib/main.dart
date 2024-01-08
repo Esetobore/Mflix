@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mflix/screens/movies-details-screen.dart';
 import 'package:mflix/utils/get_theme_controller.dart';
 import 'package:mflix/screens/navbar-screen.dart';
 import 'package:mflix/utils/theme.dart';
@@ -10,7 +11,6 @@ main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final ThemeController _themeController = Get.put(ThemeController());
   MyApp({
     super.key,
   });
@@ -20,9 +20,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mflix',
-      home: NavBarScreen(),
+      initialRoute: '/navbar',
       theme: lightMode,
       darkTheme: darkMode,
+      getPages: [
+        GetPage(name: '/navbar', page: () => NavBarScreen()),
+      ],
     );
   }
 }

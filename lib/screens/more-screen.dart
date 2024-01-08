@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../utils/get_theme_controller.dart';
+import '../utils/theme.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
@@ -17,7 +17,6 @@ class _MoreScreenState extends State<MoreScreen> {
   final String whatsApp = Uri.parse("https://wa.me/qr/C4E5OAE3B535L1").toString();
   final String twitter = Uri.parse("https://twitter.com/Esetobore?t=NUyaVjKY3NoX_hOZWYA9Cw&s=09").toString();
   final String github = Uri.parse("https://github.com/Esetobore").toString();
-  final ThemeController _themeController = Get.find();
 
 
   // Function to open a URL
@@ -48,15 +47,19 @@ class _MoreScreenState extends State<MoreScreen> {
                   children: [
                      IconButton(
                       onPressed: () {
-                        _themeController.toggleTheme();
+                        Get.changeTheme(
+                          Get.isDarkMode ? lightMode : darkMode
+                        );
                       },
-                       icon: Icon(FontAwesomeIcons.lightbulb,
+                       icon: Icon(
+                         Get.isDarkMode ? Icons.dark_mode_rounded :
+                         Icons.light_mode_rounded,
                       color: Theme.of(context).colorScheme.secondary,
                       size: 27,),
                      ),
                     const SizedBox(width: 30,),
                     Text(
-                      "App Theme", style: TextStyle(
+                      Get.isDarkMode ? "Dark Mode" : "Light Mode", style: TextStyle(
                         fontFamily: GoogleFonts.rubik().fontFamily,
                         fontSize: 20,
                         color: Theme.of(context).colorScheme.primary
