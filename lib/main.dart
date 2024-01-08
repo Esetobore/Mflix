@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mflix/screens/movies-details-screen.dart';
-import 'package:mflix/utils/get_theme_controller.dart';
 import 'package:mflix/screens/navbar-screen.dart';
 import 'package:mflix/utils/theme.dart';
 
