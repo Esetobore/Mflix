@@ -8,6 +8,17 @@ class BookmarkController extends GetxController {
     List<Map<String, dynamic>> movies = await SqlDatabaseHelper.getMovies();
     moviesList.assignAll(movies);
   }
+
+  void deleteMovie(int docId) async {
+    await SqlDatabaseHelper.deleteMovie(docId);
+    fetchMovies();
+  }
+
+  Future<void> saveToDatabase(String title, String posterPath) async {
+    await SqlDatabaseHelper.insertMovie(title, posterPath);
+    fetchMovies();
+  }
+
 }
 
 final BookmarkController bookmarkController = BookmarkController();
