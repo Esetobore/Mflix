@@ -1,2 +1,2 @@
-# mflix
+# Mflix
 
