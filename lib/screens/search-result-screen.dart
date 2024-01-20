@@ -58,36 +58,40 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         scrollDirection: Axis.horizontal,
                       ),
                       itemBuilder: (context, itemIndex, pageViewIndex) {
-                        final MediaModel media = snapshot.data![itemIndex];
-                        final posterPath = media.posterPath;
-
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  String? mediaType = snapshot.data?[itemIndex].mediaType.toString();
-                                  if (mediaType?.toLowerCase() == "tv") {
-                                    Get.to(() => SeriesDetailsScreen(series: snapshot.data![itemIndex]));
-                                  } else if(mediaType?.toLowerCase() == "movie") {
-                                    Get.to(() => MoviesDetailsScreen(movies: snapshot.data![itemIndex]));
-                                  }
-                                },
-                                child: SizedBox(
-                                    height: 200,
-                                    width: 150,
-                                    child: Image.network(
-                                      '${ApiEndPoints.imagePath}$posterPath',
-                                      filterQuality: FilterQuality.high,
-                                      fit: BoxFit.cover,
-                                    )
+                        if (snapshot.data != null && itemIndex < snapshot.data!.length) {
+                          final MediaModel media = snapshot.data![itemIndex];
+                          final posterPath = media.posterPath;
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    String? mediaType = snapshot.data?[itemIndex].mediaType.toString();
+                                    if (mediaType?.toLowerCase() == "tv") {
+                                      Get.to(() => SeriesDetailsScreen(series: snapshot.data![itemIndex]));
+                                    } else if(mediaType?.toLowerCase() == "movie") {
+                                      Get.to(() => MoviesDetailsScreen(movies: snapshot.data![itemIndex]));
+                                    }
+                                  },
+                                  child: SizedBox(
+                                      height: 200,
+                                      width: 150,
+                                      child: Image.network(
+                                        '${ApiEndPoints.imagePath}$posterPath',
+                                        filterQuality: FilterQuality.high,
+                                        fit: BoxFit.cover,
+                                      )
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        );
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                          );
+                        }
+                        else {
+                          return const Center(child: Text("No Result Found"));
+                        }
                       }
                   ),
                 ],
