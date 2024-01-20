@@ -20,7 +20,6 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
     bookmarkController.fetchMovies();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
