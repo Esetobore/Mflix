@@ -1,12 +1,15 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:mflix/utils/colours.dart';
 import 'package:mflix/widgets/default-carousel.dart';
 import 'package:mflix/widgets/main-carousel.dart';
 import 'package:mflix/widgets/series-carousel.dart';
 import '../controller/home-screen-controller.dart';
+import 'navbar-screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,8 +19,61 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late ConnectivityResult _connectivityResult;
 
-  final HomeScreenController homeScreenController = Get.put(HomeScreenController());
+  @override
+  void initState() {
+    super.initState();
+    checkConnectivity();
+  }
+
+  Future<void> checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      _connectivityResult = connectivityResult;
+    });
+
+    if (_connectivityResult == ConnectivityResult.none) {
+      showNoInternetDialog();
+    }
+  }
+  Future<void> showNoInternetDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('No Internet Connection'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Please check your internet connection.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Try Again'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                checkConnectivity();
+                reloadApp();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void reloadApp() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (BuildContext context) => NavBarScreen(),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +138,11 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getTrendingMoviesDay(),
+                future: homeScreenController.getTrendingMoviesDay(http.Client()),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString()),
+                    return const Center(
+                      child: Text("No Internet Connection Found\n Please Reload App"),
                     );
                   } else if (snapshot.hasData) {
                     return  MainCarousel(snapshot: snapshot,);
@@ -126,11 +182,11 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getTopRatedMovies(),
+                future: homeScreenController.getTopRatedMovies(http.Client()),
                 builder: (context, snapshot){
                   if(snapshot.hasError){
-                    return Center(
-                      child: Text(snapshot.error.toString()),
+                    return const Center(
+                      child: Text("No Internet Connection Found\n Please Reload App"),
                     );
                   }else if (snapshot.hasData){
                     return CarouselWidget(snapshot: snapshot);
@@ -170,11 +226,11 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getUpcomingMovies(),
+                future: homeScreenController.getUpcomingMovies(http.Client()),
                 builder: (context, snapshot){
                   if (snapshot.hasError){
-                    return Text(snapshot.error.toString());
-                  }else if (snapshot.hasData){
+                    return const Center(child: Text('No Internet Connection Found\n Please Reload App'),);
+                  } else if (snapshot.hasData){
                     return CarouselWidget(snapshot: snapshot);
                   } else{
                     return Center(child: SpinKitWave(
@@ -211,10 +267,10 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                  future: HomeScreenController().getLatestTvSeries(),
+                  future: homeScreenController.getLatestTvSeries(http.Client()),
                   builder: (context, snapshot){
                     if (snapshot.hasError){
-                      return Text(snapshot.error.toString());
+                      return const Text("No Internet Connection Found\n Please Reload App");
                     }else if (snapshot.hasData){
                       return SeriesCarouselWidget(snapshot: snapshot);
                     } else{

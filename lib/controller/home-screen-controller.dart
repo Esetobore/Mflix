@@ -7,10 +7,12 @@ import 'package:mflix/models/movie-genre-model.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 
 class HomeScreenController extends GetxController{
+  late final http.Client httpClient;
+  HomeScreenController({required this.httpClient});
   var isLoading = false.obs;
 
-      Future<List<MediaModel>> getTrendingMoviesDay() async {
-        final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+      Future<List<MediaModel>> getTrendingMoviesDay(http.Client client) async {
+        final response = await client.get(Uri.parse(ApiEndPoints.baseUrl +
             ApiEndPoints.apiPath.trendingMoviesDay +
             ApiEndPoints.apiKey));
         if (response.statusCode == 200) {
@@ -21,8 +23,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>> getTopRatedMovies() async{
-        final weekResponse = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+      Future<List<MediaModel>> getTopRatedMovies(http.Client client) async{
+        final weekResponse = await client.get(Uri.parse(ApiEndPoints.baseUrl +
         ApiEndPoints.apiPath.topRatedMovies +
         ApiEndPoints.apiKey));
         if(weekResponse.statusCode == 200){
@@ -33,8 +35,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>> getUpcomingMovies() async {
-        final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+      Future<List<MediaModel>> getUpcomingMovies(http.Client client) async {
+        final response = await client.get(Uri.parse(ApiEndPoints.baseUrl +
         ApiEndPoints.apiPath.upcomingMovies + ApiEndPoints.apiKey));
         if(response.statusCode == 200){
           final decodedData = json.decode(response.body)['results'] as List;
@@ -44,8 +46,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>> getSimilarMovies(int id) async{
-        final response = await http.get(Uri.parse(
+      Future<List<MediaModel>> getSimilarMovies(int id,http.Client client) async{
+        final response = await client.get(Uri.parse(
             "${ApiEndPoints.baseUrl}/movie/$id/similar?${ApiEndPoints.apiKey}"));
         if(response.statusCode == 200){
           final decode = jsonDecode(response.body)['results'] as List;
@@ -55,8 +57,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaGenreModel>> getMediaGenreList() async{
-        final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+      Future<List<MediaGenreModel>> getMediaGenreList(http.Client client) async{
+        final response = await client.get(Uri.parse(ApiEndPoints.baseUrl +
             ApiEndPoints.apiPath.movieGenreList +
             ApiEndPoints.apiKey));
         if (response.statusCode == 200){
@@ -67,8 +69,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<CastModel>> getCastList(int id) async{
-        final response = await http.get(Uri.parse(
+      Future<List<CastModel>> getCastList(int id, http.Client client) async{
+        final response = await client.get(Uri.parse(
             "${ApiEndPoints.baseUrl}/movie/$id/credits?${ApiEndPoints.apiKey}"));
         if (response.statusCode == 200){
           final decodeData = jsonDecode(response.body)['cast'] as List;
@@ -79,8 +81,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>> getLatestTvSeries() async {
-        final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+      Future<List<MediaModel>> getLatestTvSeries(http.Client client) async {
+        final response = await client.get(Uri.parse(ApiEndPoints.baseUrl +
             ApiEndPoints.apiPath.topRatedTvSeries + ApiEndPoints.apiKey));
         if(response.statusCode == 200){
           final decodedData = json.decode(response.body)['results']as List;
@@ -90,8 +92,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<CastModel>> getSeriesCastList(int id) async{
-        final response = await http.get(Uri.parse(
+      Future<List<CastModel>> getSeriesCastList(int id, http.Client client) async{
+        final response = await client.get(Uri.parse(
             "${ApiEndPoints.baseUrl}/tv/$id/credits?${ApiEndPoints.apiKey}"));
         if (response.statusCode == 200){
           final decodeData = jsonDecode(response.body)['cast'] as List;
@@ -102,8 +104,8 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>> getSimilarSeries(int id) async{
-        final response = await http.get(Uri.parse(
+      Future<List<MediaModel>> getSimilarSeries(int id, http.Client client) async{
+        final response = await client.get(Uri.parse(
             "${ApiEndPoints.baseUrl}/tv/$id/recommendations?${ApiEndPoints.apiKey}"));
         if(response.statusCode == 200){
           final decode = jsonDecode(response.body)['results'] as List;
@@ -113,5 +115,6 @@ class HomeScreenController extends GetxController{
         }
       }
 
-
 }
+
+final HomeScreenController homeScreenController = Get.put(HomeScreenController(httpClient: http.Client()));

@@ -12,9 +12,9 @@ class CastModel {
 
   factory CastModel.fromJson(Map<String, dynamic> json) {
     return CastModel(
-      originalName: json["original_name"] ?? "N/A",
-      profilePath: json["profile_path"] ?? "N/A",
-      character: json["character"] ?? "N/A",
+      originalName: json["original_name"] ?? "",
+      profilePath: json["profile_path"] ?? "",
+      character: json["character"] ?? "",
     );
   }
 

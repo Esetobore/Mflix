@@ -9,11 +9,11 @@ import '../controller/bookmark-screen-controller.dart';
 import '../controller/home-screen-controller.dart';
 import '../models/cast-model.dart';
 import '../models/movie-genre-model.dart';
-import '../sql_helper.dart';
 import '../utils/api-endpoint.dart';
 import '../utils/colours.dart';
 import '../widgets/cast-list-design.dart';
 import '../widgets/custom-buttons-fill.dart';
+import 'package:http/http.dart' as http;
 
 class SeriesDetailsScreen extends StatefulWidget {
   const SeriesDetailsScreen({
@@ -37,7 +37,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
   void initState() {
     super.initState();
     if (movieGenre.isEmpty) {
-      homeScreenController.getMediaGenreList().then((genreList) {
+      homeScreenController.getMediaGenreList(http.Client()).then((genreList) {
         setState(() {
           movieGenre = genreList;
         });
@@ -61,17 +61,6 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
     } else {
       return ['Unknown'];
     }
-  }
-
-  void _saveToDatabase() async {
-    final title = widget.series.title;
-    final posterPath = widget.series.posterPath;
-    int insertId = await SqlDatabaseHelper.insertMovie(title, posterPath);
-    print("Database Save id: $insertId");
-    bookmarkController.fetchMovies();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Added to List')),
-    );
   }
 
 
@@ -140,7 +129,10 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                             icon: Icons.bookmark_add,
                             text: 'Add to List',
                             onPressed: (){
-                              _saveToDatabase();
+                              bookmarkController.saveToDatabase(widget.series.title, widget.series.posterPath);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Added to List')),
+                              );
                             })
                       ],
                     ),
@@ -206,11 +198,11 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                     ),
                     const SizedBox(height: 5,),
                     FutureBuilder(
-                      future: homeScreenController.getSeriesCastList(widget.series.id),
+                      future: homeScreenController.getSeriesCastList(widget.series.id,http.Client()),
                       builder: (context, snapshot){
                         if(snapshot.hasError){
-                          return Center(
-                            child: Text("CastListBuilder: ${snapshot.error.toString()}"),
+                          return const Center(
+                            child: Text("No Internet Connection Found\n Please Reload Page"),
                           );
                         }else if(snapshot.hasData){
                           return CastListWidget(snapshot: snapshot);
@@ -228,10 +220,10 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                     fontSize: 17,
                     color: Theme.of(context).colorScheme.primary),),
                     FutureBuilder(
-                        future: homeScreenController.getSimilarSeries(widget.series.id),
+                        future: homeScreenController.getSimilarSeries(widget.series.id, http.Client()),
                         builder: (context, snapShot){
                           if(snapShot.hasError){
-                            return Text('SimilarSeriesBuilder: ${snapShot.error.toString()}');
+                            return const Text('No Internet Connection Found\n Please Reload Page');
                           }else if(snapShot.hasData){
                             return Padding(
                               padding: const EdgeInsets.only(top: 10, bottom: 10),
