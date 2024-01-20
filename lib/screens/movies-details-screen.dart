@@ -13,7 +13,7 @@ import 'package:mflix/widgets/default-carousel.dart';
 import '../controller/bookmark-screen-controller.dart';
 import '../models/cast-model.dart';
 import '../models/movie-genre-model.dart';
-import 'package:mflix/sql_helper.dart';
+import 'package:http/http.dart' as http;
 
 class MoviesDetailsScreen extends StatefulWidget {
 
@@ -40,7 +40,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
   void initState() {
     super.initState();
     if (movieGenre.isEmpty) {
-      homeScreenController.getMediaGenreList().then((genreList) {
+      homeScreenController.getMediaGenreList(http.Client()).then((genreList) {
         setState(() {
           movieGenre = genreList;
         });
@@ -63,16 +63,6 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
     } else {
       return ['Unknown'];
     }
-  }
-
-  void _saveToDatabase() async {
-    final title = widget.movies.title;
-    final posterPath = widget.movies.posterPath;
-    int insertId = await SqlDatabaseHelper.insertMovie(title, posterPath);
-    bookmarkController.fetchMovies();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Added to List')),
-    );
   }
 
   @override
@@ -140,7 +130,12 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         IconButtonWithText(
                             icon: Icons.bookmark_add,
                             text: 'Add to List',
-                            onPressed: _saveToDatabase,
+                            onPressed: () {
+                              bookmarkController.saveToDatabase(widget.movies.title, widget.movies.backDropPath);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Added to List')),
+                              );
+                            },
                         )
                       ],
                     ),
@@ -207,7 +202,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                     ),
                     const SizedBox(height: 20,),
                     FutureBuilder(
-                        future: homeScreenController.getCastList(widget.movies.id),
+                        future: homeScreenController.getCastList(widget.movies.id, http.Client()),
                         builder: (context, snapshot){
                           if(snapshot.hasError){
                             print(snapshot.error.toString());
@@ -230,7 +225,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         fontSize: 17,
                         color: Colours.palletWhite),),
                     FutureBuilder(
-                        future: homeScreenController.getSimilarMovies(widget.movies.id),
+                        future: homeScreenController.getSimilarMovies(widget.movies.id, http.Client()),
                         builder: (context, snapShot){
                           if(snapShot.hasError){
                             return const Text('No Internet Connection Found\n Please Reload Page');

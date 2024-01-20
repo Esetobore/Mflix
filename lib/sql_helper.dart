@@ -19,7 +19,7 @@ class SqlDatabaseHelper{
     ''');
   }
 
-  static Future<int> insertMovie(String title, String posterPath) async {
+  Future<int> insertMovie(String title, String posterPath) async {
     final db = await _openDatabase();
     final data = {
       'title': title,
@@ -28,12 +28,12 @@ class SqlDatabaseHelper{
     return await db.insert('movies', data);
   }
 
-  static Future<List<Map<String, dynamic>>> getMovies() async {
+  Future<List<Map<String, dynamic>>> getMovies() async {
     final db = await _openDatabase();
     return await db.query('movies');
   }
 
-  static Future<int> deleteMovie(int id) async {
+  Future<int> deleteMovie(int id) async {
     final db = await _openDatabase();
     return await db.delete('movies', where: 'id = ?', whereArgs: [id]);
   }

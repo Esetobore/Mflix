@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mflix/main.dart';
+import 'package:http/http.dart' as http;
 import 'package:mflix/utils/colours.dart';
 import 'package:mflix/widgets/default-carousel.dart';
 import 'package:mflix/widgets/main-carousel.dart';
@@ -19,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final HomeScreenController homeScreenController = Get.put(HomeScreenController());
   late ConnectivityResult _connectivityResult;
 
   @override
@@ -139,7 +138,7 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getTrendingMoviesDay(),
+                future: homeScreenController.getTrendingMoviesDay(http.Client()),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
@@ -183,7 +182,7 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getTopRatedMovies(),
+                future: homeScreenController.getTopRatedMovies(http.Client()),
                 builder: (context, snapshot){
                   if(snapshot.hasError){
                     return const Center(
@@ -227,7 +226,7 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                future: HomeScreenController().getUpcomingMovies(),
+                future: homeScreenController.getUpcomingMovies(http.Client()),
                 builder: (context, snapshot){
                   if (snapshot.hasError){
                     return const Center(child: Text('No Internet Connection Found\n Please Reload App'),);
@@ -268,7 +267,7 @@ class _BuildScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             SizedBox(
               child: FutureBuilder(
-                  future: HomeScreenController().getLatestTvSeries(),
+                  future: homeScreenController.getLatestTvSeries(http.Client()),
                   builder: (context, snapshot){
                     if (snapshot.hasError){
                       return const Text("No Internet Connection Found\n Please Reload App");
