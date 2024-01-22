@@ -9,6 +9,7 @@ import 'package:mflix/widgets/default-carousel.dart';
 import 'package:mflix/widgets/main-carousel.dart';
 import 'package:mflix/widgets/series-carousel.dart';
 import '../controller/home-screen-controller.dart';
+import '../controller/navigation-bar-controller.dart';
 import 'navbar-screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -67,11 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void reloadApp() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (BuildContext context) => NavBarScreen(),
-      ),
-    );
+    navigationBarController.onReady();
+    Get.offAll(() => NavBarScreen());
   }
 
 
@@ -142,7 +140,7 @@ class _BuildScreen extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
-                      child: Text("No Internet Connection Found\n Please Reload App"),
+                      child: Text("Something went wrong"),
                     );
                   } else if (snapshot.hasData) {
                     return  MainCarousel(snapshot: snapshot,);
@@ -186,7 +184,7 @@ class _BuildScreen extends StatelessWidget {
                 builder: (context, snapshot){
                   if(snapshot.hasError){
                     return const Center(
-                      child: Text("No Internet Connection Found\n Please Reload App"),
+                      child: Text("Something went wrong"),
                     );
                   }else if (snapshot.hasData){
                     return CarouselWidget(snapshot: snapshot);
@@ -229,7 +227,7 @@ class _BuildScreen extends StatelessWidget {
                 future: homeScreenController.getUpcomingMovies(http.Client()),
                 builder: (context, snapshot){
                   if (snapshot.hasError){
-                    return const Center(child: Text('No Internet Connection Found\n Please Reload App'),);
+                    return const Center(child: Text('Something went wrong'),);
                   } else if (snapshot.hasData){
                     return CarouselWidget(snapshot: snapshot);
                   } else{
@@ -270,7 +268,7 @@ class _BuildScreen extends StatelessWidget {
                   future: homeScreenController.getLatestTvSeries(http.Client()),
                   builder: (context, snapshot){
                     if (snapshot.hasError){
-                      return const Text("No Internet Connection Found\n Please Reload App");
+                      return const Center(child: Text("Something went wrong"));
                     }else if (snapshot.hasData){
                       return SeriesCarouselWidget(snapshot: snapshot);
                     } else{

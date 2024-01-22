@@ -29,7 +29,7 @@ class ExploreListWidget extends StatelessWidget {
                    future: exploreScreenController.getPopularMovies(),
                    builder: (context, snapshot) {
                      if(snapshot.hasError){
-                       return const Text("No Internet Connection Found");}
+                       return const Text("Something went wrong");}
                      if (snapshot.hasData){
                        return ListView.builder(
                          scrollDirection: Axis.vertical,

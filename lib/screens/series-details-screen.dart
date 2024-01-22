@@ -131,7 +131,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                             onPressed: (){
                               bookmarkController.saveToDatabase(widget.series.title, widget.series.posterPath);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Added to List')),
+                                const SnackBar(content: Text('Added to List'), duration: Duration(milliseconds: 100),),
                               );
                             })
                       ],
@@ -202,7 +202,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                       builder: (context, snapshot){
                         if(snapshot.hasError){
                           return const Center(
-                            child: Text("No Internet Connection Found\n Please Reload Page"),
+                            child: Text("Something went wrong"),
                           );
                         }else if(snapshot.hasData){
                           return CastListWidget(snapshot: snapshot);
@@ -223,7 +223,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
                         future: homeScreenController.getSimilarSeries(widget.series.id, http.Client()),
                         builder: (context, snapShot){
                           if(snapShot.hasError){
-                            return const Text('No Internet Connection Found\n Please Reload Page');
+                            return const Text('Something Went Wrong\n Please Reload Page');
                           }else if(snapShot.hasData){
                             return Padding(
                               padding: const EdgeInsets.only(top: 10, bottom: 10),

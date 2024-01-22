@@ -44,7 +44,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           future: exploreScreenController.getSearchResult(widget.value),
           builder: (context, snapshot){
             if(snapshot.hasError){
-              return const Text('No Internet Connection Found');
+              return const Text('Something went wrong');
             }
             if(snapshot.hasData){
               return Column(

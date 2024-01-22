@@ -131,9 +131,9 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                             icon: Icons.bookmark_add,
                             text: 'Add to List',
                             onPressed: () {
-                              bookmarkController.saveToDatabase(widget.movies.title, widget.movies.backDropPath);
+                              bookmarkController.saveToDatabase(widget.movies.title, widget.movies.posterPath);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Added to List')),
+                                const SnackBar(content: Text('Added to List'), duration: Duration(milliseconds: 100),),
                               );
                             },
                         )
@@ -176,7 +176,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                             color: Colours.palletRed),),
                         SizedBox(
                           width: 300,
-                          child: Text(getGenresNames().join(', '),style: TextStyle(
+                          child: Text(getGenresNames().join(' '),style: TextStyle(
                               fontFamily: GoogleFonts.rubik().fontFamily,
                               fontSize: 17,
                               color: Theme.of(context).colorScheme.primary),),
@@ -207,7 +207,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                           if(snapshot.hasError){
                             print(snapshot.error.toString());
                               return const Center(
-                                child: Text("No Internet Connection Found\n Please Reload Page"),
+                                child: Text("Something went wrong."),
                               );
                           }else if(snapshot.hasData){
                             return CastListWidget(snapshot: snapshot);
@@ -228,7 +228,7 @@ class _MoviesDetailsScreenState extends State<MoviesDetailsScreen> {
                         future: homeScreenController.getSimilarMovies(widget.movies.id, http.Client()),
                         builder: (context, snapShot){
                           if(snapShot.hasError){
-                            return const Text('No Internet Connection Found\n Please Reload Page');
+                            return const Center(child:  Text('Something went wrong'));
                           }else if(snapShot.hasData){
                             return Padding(
                               padding: const EdgeInsets.only(top: 10, bottom: 10),

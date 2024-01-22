@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mflix/controller/bookmark-screen-controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:mflix/controller/home-screen-controller.dart';
@@ -7,16 +8,12 @@ import 'package:mflix/sql_helper.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'unit_test.mocks.dart';
 
-class MockDatabaseHelper extends Mock implements SqlDatabaseHelper {}
-
-class MockHttpClient extends Mock implements http.Client {}
+class MockDatabaseHelper extends GetxController with Mock implements SqlDatabaseHelper {}
 
 @GenerateMocks([http.Client])
 void main() {
-  late MockHttpClient mockHttpClient;
-  late HomeScreenController homeScreenController;
-
   group("BookmarkController", () {
     MockDatabaseHelper mockDatabaseHelper = MockDatabaseHelper();
     BookmarkController bookmarkController = BookmarkController(dbHelper: mockDatabaseHelper);
@@ -37,29 +34,16 @@ void main() {
     });
   });
 
-  group("HomeScreenController", () {
+  test("Trending Movies Day", () async{
+      final client = MockClient();
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.trendingMoviesDay + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation)
+      async => http.Response('"results": {"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}', 200));
 
-    setUp(() {
-      mockHttpClient = MockHttpClient();
-      homeScreenController = HomeScreenController(httpClient: mockHttpClient);
+      final result = await homeScreenController.getTrendingMoviesDay(client);
+
+      expect(result, isA<MediaModel>());
+
     });
 
-    test('Success - getTrendingMoviesDay', () async {
-      // Arrange
-      const mockResponse = '{"results": [{"id": 1, "title": "Movie 1"}]}';
-      when(mockHttpClient.get(Uri.parse(ApiEndPoints.baseUrl +
-          ApiEndPoints.apiPath.trendingMoviesDay + ApiEndPoints.apiKey))).
-      thenAnswer((_) async =>
-          http.Response(mockResponse, 200));
-
-      // Act
-      final result = await homeScreenController.getTrendingMoviesDay(mockHttpClient);
-
-      // Assert
-      expect(result, isA<List<MediaModel>>());
-      expect(result.length, 1);
-    });
-
-
-  });
 }

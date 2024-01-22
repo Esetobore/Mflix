@@ -16,4 +16,18 @@ class NavigationBarController extends GetxController {
   void dispose() {
     super.dispose();
   }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+
 }
+
+final NavigationBarController navigationBarController = Get.put(NavigationBarController());

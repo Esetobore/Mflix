@@ -40,7 +40,7 @@ class BookMarkCard extends StatelessWidget {
             onPressed: () {
               bookmarkController.deleteMovie(moviesListX['id']);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Removed From List')),
+                const SnackBar(content: Text('Removed From List'), duration: Duration(milliseconds: 100),),
               );
             },
             icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary),

@@ -7,8 +7,6 @@ import 'package:mflix/models/movie-genre-model.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 
 class HomeScreenController extends GetxController{
-  late final http.Client httpClient;
-  HomeScreenController({required this.httpClient});
   var isLoading = false.obs;
 
       Future<List<MediaModel>> getTrendingMoviesDay(http.Client client) async {
@@ -16,8 +14,14 @@ class HomeScreenController extends GetxController{
             ApiEndPoints.apiPath.trendingMoviesDay +
             ApiEndPoints.apiKey));
         if (response.statusCode == 200) {
-          final decodedData = json.decode(response.body)['results'] as List;
-          return decodedData.map((movie) => MediaModel.fromJson(movie)).toList();
+          final Map<String, dynamic>? responseData = json.decode(response.body);
+
+          if (responseData != null && responseData.containsKey('results')) {
+            final decodedData = responseData['results'] as List;
+            return decodedData.map((movie) => MediaModel.fromJson(movie)).toList();
+          } else {
+            throw Exception('Results key not found in the JSON response');
+          }
         } else {
           throw Exception('TrendingMoviesDaily Failed to retrieve');
         }
@@ -115,6 +119,7 @@ class HomeScreenController extends GetxController{
         }
       }
 
+
 }
 
-final HomeScreenController homeScreenController = Get.put(HomeScreenController(httpClient: http.Client()));
+final HomeScreenController homeScreenController = Get.put(HomeScreenController());
