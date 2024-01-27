@@ -9,8 +9,6 @@ import 'package:mflix/widgets/default-carousel.dart';
 import 'package:mflix/widgets/main-carousel.dart';
 import 'package:mflix/widgets/series-carousel.dart';
 import '../controller/home-screen-controller.dart';
-import '../controller/navigation-bar-controller.dart';
-import 'navbar-screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,18 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 checkConnectivity();
-                reloadApp();
+                homeScreenController.reloadApp();
               },
             ),
           ],
         );
       },
     );
-  }
-
-  void reloadApp() {
-    navigationBarController.onReady();
-    Get.offAll(() => NavBarScreen());
   }
 
 

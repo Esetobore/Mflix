@@ -6,6 +6,9 @@ import 'package:mflix/models/media-model.dart';
 import 'package:mflix/models/movie-genre-model.dart';
 import 'package:mflix/utils/api-endpoint.dart';
 
+import '../screens/navbar-screen.dart';
+import 'navigation-bar-controller.dart';
+
 class HomeScreenController extends GetxController{
   var isLoading = false.obs;
 
@@ -119,6 +122,10 @@ class HomeScreenController extends GetxController{
         }
       }
 
+  void reloadApp() {
+    navigationBarController.onReady();
+    Get.offAll(() => NavBarScreen());
+  }
 
 }
 
