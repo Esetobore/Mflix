@@ -28,7 +28,6 @@ class CarouselWidget extends StatelessWidget {
       itemBuilder: (context, itemIndex, pageViewIndex) {
         if (data != null && itemIndex < data.length) {
           final posterPath = data[itemIndex]?.posterPath;
-
           return ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(

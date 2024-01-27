@@ -9,6 +9,8 @@ import 'package:mflix/widgets/default-carousel.dart';
 import 'package:mflix/widgets/main-carousel.dart';
 import 'package:mflix/widgets/series-carousel.dart';
 import '../controller/home-screen-controller.dart';
+import 'movies-details-screen.dart';
+import '../widgets/navbar-screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ConnectivityResult _connectivityResult;
+  final HomeScreenController homeScreenController = Get.put(HomeScreenController());
 
   @override
   void initState() {
@@ -56,13 +58,18 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 checkConnectivity();
-                homeScreenController.reloadApp();
+                reloadApp();
               },
             ),
           ],
         );
       },
     );
+  }
+
+  void reloadApp() {
+    navigationBarController.onReady();
+    Get.offAll(() => NavBarScreen());
   }
 
 
