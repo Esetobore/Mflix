@@ -9,6 +9,7 @@ import '../utils/api-endpoint.dart';
 import '../utils/colours.dart';
 import 'explore-screen.dart';
 import 'movies-details-screen.dart';
+import 'package:http/http.dart' as http;
 
 class SearchResultScreen extends StatefulWidget {
   String value;
@@ -34,14 +35,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Text("<${widget.value}>", style: TextStyle(
-                fontFamily: GoogleFonts.rubik().fontFamily,
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.primary
-            ),),
+            Center(
+              child: Text("<${widget.value}>", style: TextStyle(
+                  fontFamily: GoogleFonts.rubik().fontFamily,
+                  fontSize: 20,
+                  color: Theme.of(context).colorScheme.primary
+              ),),
+            ),
             const SizedBox(height: 10,),
         FutureBuilder(
-          future: exploreScreenController.getSearchResult(widget.value),
+          future: exploreScreenController.getSearchResult(widget.value, http.Client()),
           builder: (context, snapshot){
             if(snapshot.hasError){
               return const Text('Something went wrong');

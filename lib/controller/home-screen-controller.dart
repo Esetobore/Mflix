@@ -1,10 +1,16 @@
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:mflix/models/cast-model.dart';
 import 'package:mflix/models/media-model.dart';
 import 'package:mflix/models/movie-genre-model.dart';
 import 'package:mflix/utils/api-endpoint.dart';
+
+import '../screens/home-screen.dart';
+import '../widgets/navbar-screen.dart';
+import 'navigation-bar-controller.dart';
 
 class HomeScreenController extends GetxController{
   var isLoading = false.obs;
@@ -14,14 +20,8 @@ class HomeScreenController extends GetxController{
             ApiEndPoints.apiPath.trendingMoviesDay +
             ApiEndPoints.apiKey));
         if (response.statusCode == 200) {
-          final Map<String, dynamic>? responseData = json.decode(response.body);
-
-          if (responseData != null && responseData.containsKey('results')) {
-            final decodedData = responseData['results'] as List;
-            return decodedData.map((movie) => MediaModel.fromJson(movie)).toList();
-          } else {
-            throw Exception('Results key not found in the JSON response');
-          }
+          final decodedData = json.decode(response.body)['results'] as List;
+          return decodedData.map((movie) => MediaModel.fromJson(movie)).toList();
         } else {
           throw Exception('TrendingMoviesDaily Failed to retrieve');
         }
@@ -85,7 +85,7 @@ class HomeScreenController extends GetxController{
         }
       }
 
-      Future<List<MediaModel>> getLatestTvSeries(http.Client client) async {
+      Future<List<MediaModel>> getTopRatedTvSeries(http.Client client) async {
         final response = await client.get(Uri.parse(ApiEndPoints.baseUrl +
             ApiEndPoints.apiPath.topRatedTvSeries + ApiEndPoints.apiKey));
         if(response.statusCode == 200){
@@ -120,6 +120,41 @@ class HomeScreenController extends GetxController{
       }
 
 
-}
+  final _connectivityResult = ConnectivityResult.none.obs;
+  ConnectivityResult get connectivityResult => _connectivityResult.value;
+  Future<void> checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    _connectivityResult.value = connectivityResult;
 
-final HomeScreenController homeScreenController = Get.put(HomeScreenController());
+    if (_connectivityResult.value == ConnectivityResult.none) {
+      showNoInternetDialog();
+    }
+  }
+  void showNoInternetDialog() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('No Internet Connection'),
+        content: const SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Please check your internet connection.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Try Again'),
+            onPressed: () {
+              Get.back(); // Close the current dialog
+              checkConnectivity();
+              navigationBarController.onReady();
+              Get.offAll(() => NavBarScreen());
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
+}

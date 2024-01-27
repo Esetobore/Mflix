@@ -22,8 +22,6 @@ class NavBarScreen extends StatelessWidget {
       fontFamily: GoogleFonts.rubik().fontFamily,
       fontSize: 10);
 
-  NavBarScreen({super.key});
-
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),

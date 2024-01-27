@@ -12,12 +12,9 @@ class ExploreScreenController extends GetxController{
 
       Future<List<MediaModel>>getPopularSeries() async{
           final response = await http.get(Uri.parse(
-              ApiEndPoints.baseUrl +
-              ApiEndPoints.apiPath.popularSeres +
-              ApiEndPoints.apiKey));
+              ApiEndPoints.baseUrl + ApiEndPoints.apiPath.popularSeres + ApiEndPoints.apiKey));
           if(response.statusCode == 200){
             final decodeData = jsonDecode(response.body)["results"] as List;
-
             return decodeData.map((series) => MediaModel.fromJson(series)).toList();
           }else{
             throw Exception('PopularSeries Failed to Retrieve');
@@ -25,20 +22,17 @@ class ExploreScreenController extends GetxController{
       }
       Future<List<MediaModel>>getPopularMovies() async{
         final response = await http.get(Uri.parse(
-            ApiEndPoints.baseUrl +
-                ApiEndPoints.apiPath.popularMovies +
-                ApiEndPoints.apiKey));
+            ApiEndPoints.baseUrl + ApiEndPoints.apiPath.popularMovies + ApiEndPoints.apiKey));
         if(response.statusCode == 200){
           final decodeData = jsonDecode(response.body)["results"] as List;
-
           return decodeData.map((movies) => MediaModel.fromJson(movies)).toList();
         }else{
           throw Exception('PopularMovies Failed to Retrieve');
         }
       }
 
-      Future<List<MediaModel>>getSearchResult(String query) async{
-        final response = await http.get(Uri.parse(
+      Future<List<MediaModel>>getSearchResult(String query, http.Client client) async{
+        final response = await client.get(Uri.parse(
           "${ApiEndPoints.baseUrl}${ApiEndPoints.apiPath.search}${ApiEndPoints.apiKey}&query=$query"
         ));
         if(response.statusCode == 200){
@@ -48,6 +42,10 @@ class ExploreScreenController extends GetxController{
         }else{
           throw Exception("SearchResult Failed to Retrieve");
         }
-
       }
+
+  Future<void> refreshData() async {
+    await getPopularMovies(); // Implement your data refresh logic
+    await getPopularSeries(); // Implement your data refresh logic for series
+  }
 }
