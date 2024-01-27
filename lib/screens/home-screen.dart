@@ -25,53 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkConnectivity();
+    homeScreenController.checkConnectivity();
   }
-
-  Future<void> checkConnectivity() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    setState(() {
-      _connectivityResult = connectivityResult;
-    });
-
-    if (_connectivityResult == ConnectivityResult.none) {
-      showNoInternetDialog();
-    }
-  }
-  Future<void> showNoInternetDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('No Internet Connection'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Please check your internet connection.'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Try Again'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                checkConnectivity();
-                reloadApp();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void reloadApp() {
-    navigationBarController.onReady();
-    Get.offAll(() => NavBarScreen());
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,195 +48,198 @@ class _BuildScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/profile.jpg'),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text('Welcome!', style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 17,
-                            color: Theme.of(context).colorScheme.primary
-                        ),),
+      child: RefreshIndicator(
+        onRefresh: homeScreenController.refreshApp,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage('assets/profile.jpg'),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text('Movie Magic Awaits', style: TextStyle(
-                            fontFamily: GoogleFonts.rubik().fontFamily,
-                            fontSize: 13,
-                            color: Theme.of(context).colorScheme.primary
-                        ),),
-                      )
-                    ],
-                  ),
-                ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text('Welcome!', style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.rubik().fontFamily,
+                              fontSize: 17,
+                              color: Theme.of(context).colorScheme.primary
+                          ),),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text('Movie Magic Awaits', style: TextStyle(
+                              fontFamily: GoogleFonts.rubik().fontFamily,
+                              fontSize: 13,
+                              color: Theme.of(context).colorScheme.primary
+                          ),),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              child: FutureBuilder(
-                future: homeScreenController.getTrendingMoviesDay(http.Client()),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text("Something went wrong"),
-                    );
-                  } else if (snapshot.hasData) {
-                    return  MainCarousel(snapshot: snapshot,);
-                  } else {
-                    return Center(child: SpinKitWave(
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 50.0,
-                    ));
-                  }
-                },
+              const SizedBox(height: 10,),
+              SizedBox(
+                child: FutureBuilder(
+                  future: homeScreenController.getTrendingMoviesDay(http.Client()),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Something went wrong"),
+                      );
+                    } else if (snapshot.hasData) {
+                      return  MainCarousel(snapshot: snapshot,);
+                    } else {
+                      return Center(child: SpinKitWave(
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 50.0,
+                      ));
+                    }
+                  },
+                ),
               ),
-            ),
 
-            //Trending Movies Carousel
-            const SizedBox(height: 20,),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Top Rated Movies', style: TextStyle(
-                      fontFamily: GoogleFonts.rubik().fontFamily,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary
-                  ),),
-                  Text('See all', style: TextStyle(
-                      fontFamily: GoogleFonts.rubik().fontFamily,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colours.palletBlue
-                  ),),
-                ],
+              //Trending Movies Carousel
+              const SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Top Rated Movies', style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary
+                    ),),
+                    Text('See all', style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.palletBlue
+                    ),),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              child: FutureBuilder(
-                future: homeScreenController.getTopRatedMovies(http.Client()),
-                builder: (context, snapshot){
-                  if(snapshot.hasError){
-                    return const Center(
-                      child: Text("Something went wrong"),
-                    );
-                  }else if (snapshot.hasData){
-                    return CarouselWidget(snapshot: snapshot);
-                  } else {
-                    return Center(child: SpinKitWave(
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 50.0,
-                    ),);
-                  }
+              const SizedBox(height: 10,),
+              SizedBox(
+                child: FutureBuilder(
+                  future: homeScreenController.getTopRatedMovies(http.Client()),
+                  builder: (context, snapshot){
+                    if(snapshot.hasError){
+                      return const Center(
+                        child: Text("Something went wrong"),
+                      );
+                    }else if (snapshot.hasData){
+                      return CarouselWidget(snapshot: snapshot);
+                    } else {
+                      return Center(child: SpinKitWave(
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 50.0,
+                      ),);
+                    }
 
-                }
-              ),
-            ),
-            //Latest Moves Carousel
-            const SizedBox(height: 20,),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Upcoming Movies', style: TextStyle(
-                      fontFamily: GoogleFonts.rubik().fontFamily,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary
-                  ),),
-                  Text('See all', style: TextStyle(
-                      fontFamily: GoogleFonts.rubik().fontFamily,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colours.palletBlue
-                  ),),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              child: FutureBuilder(
-                future: homeScreenController.getUpcomingMovies(http.Client()),
-                builder: (context, snapshot){
-                  if (snapshot.hasError){
-                    return const Center(child: Text('Something went wrong'),);
-                  } else if (snapshot.hasData){
-                    return CarouselWidget(snapshot: snapshot);
-                  } else{
-                    return Center(child: SpinKitWave(
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 50.0,
-                    ),);
                   }
-                }
+                ),
               ),
-            ),
-            //Top Rated Series Carousel
-            const SizedBox(height: 20,),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Top Rated Series', style: TextStyle(
-                      fontFamily: GoogleFonts.rubik().fontFamily,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary
-                  ),),
-                  Text('See all', style: TextStyle(
-                      fontFamily: GoogleFonts.rubik().fontFamily,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colours.palletBlue
-                  ),),
-                ],
+              //Latest Moves Carousel
+              const SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Upcoming Movies', style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary
+                    ),),
+                    Text('See all', style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.palletBlue
+                    ),),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              child: FutureBuilder(
-                  future: homeScreenController.getLatestTvSeries(http.Client()),
+              const SizedBox(height: 10,),
+              SizedBox(
+                child: FutureBuilder(
+                  future: homeScreenController.getUpcomingMovies(http.Client()),
                   builder: (context, snapshot){
                     if (snapshot.hasError){
-                      return const Center(child: Text("Something went wrong"));
-                    }else if (snapshot.hasData){
-                      return SeriesCarouselWidget(snapshot: snapshot);
+                      return const Center(child: Text('Something went wrong'),);
+                    } else if (snapshot.hasData){
+                      return CarouselWidget(snapshot: snapshot);
                     } else{
-                      return  Center(child: SpinKitWave(
-                        color:Theme.of(context).colorScheme.secondary,
+                      return Center(child: SpinKitWave(
+                        color: Theme.of(context).colorScheme.secondary,
                         size: 50.0,
                       ),);
                     }
                   }
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-          ],
+              //Top Rated Series Carousel
+              const SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Top Rated Series', style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary
+                    ),),
+                    Text('See all', style: TextStyle(
+                        fontFamily: GoogleFonts.rubik().fontFamily,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.palletBlue
+                    ),),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10,),
+              SizedBox(
+                child: FutureBuilder(
+                    future: homeScreenController.getTopRatedTvSeries(http.Client()),
+                    builder: (context, snapshot){
+                      if (snapshot.hasError){
+                        return const Center(child: Text("Something went wrong"));
+                      }else if (snapshot.hasData){
+                        return SeriesCarouselWidget(snapshot: snapshot);
+                      } else{
+                        return  Center(child: SpinKitWave(
+                          color:Theme.of(context).colorScheme.secondary,
+                          size: 50.0,
+                        ),);
+                      }
+                    }
+                ),
+              ),
+              const SizedBox(height: 10,),
+            ],
+          ),
         ),
       ),
     );
