@@ -156,5 +156,8 @@ class HomeScreenController extends GetxController{
     );
   }
 
+  Future<void> refreshApp() async {
+    Get.offAll(() => NavBarScreen());
+  }
 
 }
