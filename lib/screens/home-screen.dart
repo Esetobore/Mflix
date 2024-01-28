@@ -30,15 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() => homeScreenController.isLoading.value
-          ? Center(
-          child: SpinKitWave(
-            color: Theme.of(context).colorScheme.secondary,
-            size: 50.0,
-          ) )
-          : const _BuildScreen()),
-    );
+    return const Scaffold(
+      body: _BuildScreen());
   }
 
 }
