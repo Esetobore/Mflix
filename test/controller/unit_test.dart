@@ -16,9 +16,14 @@ HomeScreenController homeScreenController = Get.put(HomeScreenController());
 
 @GenerateMocks([http.Client])
 void main() {
-  group("BookmarkController", () {
 
+  late http.Client client;
 
+  setUp(() {
+    client = MockClient();
+  });
+
+group("BookmarkController", () {
     test("Initialize Empty", () {
       expect(bookmarkController.moviesList.length, 0);
     });
@@ -26,75 +31,126 @@ void main() {
   });
 
 group("HomeScreenController", () {
-  final client = MockClient();
+  group("Trending Movies Day", (){
+    test("Trending Movies Day", () async {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.trendingMoviesDay + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
 
-  test("Trending Movies Day", () async {
-    when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.trendingMoviesDay + ApiEndPoints.apiKey)))
-        .thenAnswer((realInvocation) async =>
-        http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
+      final result = await homeScreenController.getTrendingMoviesDay(client);
 
-    final result = await homeScreenController.getTrendingMoviesDay(client);
-
-    expect(result, isA<List<MediaModel>>());
+      expect(result, isA<List<MediaModel>>());
+    });
+    test('Error Exception', () {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.trendingMoviesDay + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('Not Found', 404));
+      final result = homeScreenController.getTrendingMoviesDay(client);
+      expect(result, throwsException);
+    });
   });
 
-  test("getTopRatedMovies", () async {
-    when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.topRatedMovies + ApiEndPoints.apiKey)))
-        .thenAnswer((realInvocation) async =>
-        http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka"}]}', 200));
+  group("getTopRatedMovies", (){
+    test("getTopRatedMovies", () async {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.topRatedMovies + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka"}]}', 200));
 
-    final result = await homeScreenController.getTopRatedMovies(client);
+      final result = await homeScreenController.getTopRatedMovies(client);
 
-    expect(result, isA<List<MediaModel>>());
+      expect(result, isA<List<MediaModel>>());
+    });
+    test('Error Exception', () {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.topRatedMovies + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('Not Found', 404));
+      final result = homeScreenController.getTopRatedMovies(client);
+      expect(result, throwsException);
+    });
   });
 
-  test("getUpcomingMovies", () async {
-    when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.upcomingMovies + ApiEndPoints.apiKey)))
-        .thenAnswer((realInvocation) async =>
-        http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
 
-    final result = await homeScreenController.getUpcomingMovies(client);
+group("getUpcomingMovies", () {
+    test("getUpcomingMovies", () async {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.upcomingMovies + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
 
-    expect(result, isA<List<MediaModel>>());
+      final result = await homeScreenController.getUpcomingMovies(client);
+
+      expect(result, isA<List<MediaModel>>());
+    });
+    test('Error Exception', () {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.upcomingMovies + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('Not Found', 404));
+      final result = homeScreenController.getUpcomingMovies(client);
+      expect(result, throwsException);
+    });
   });
 
-  test("getSimilarMovies", () async {
+ group("getSimilarMovies", () {
+   var id = 1234;
+    test("getSimilarMovies", () async {
+      when(client.get(Uri.parse("${ApiEndPoints.baseUrl}/movie/$id/similar?${ApiEndPoints.apiKey}")))
+          .thenAnswer((realInvocation) async =>
+          http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
+
+      final result = await homeScreenController.getSimilarMovies(id, client);
+
+      expect(result, isA<List<MediaModel>>());
+    });
+    test('Error Exception', () {
+      when(client.get(Uri.parse("${ApiEndPoints.baseUrl}/movie/$id/similar?${ApiEndPoints.apiKey}")))
+          .thenAnswer((realInvocation) async =>
+          http.Response('Not Found', 404));
+      final result = homeScreenController.getSimilarMovies(id, client);
+      expect(result, throwsException);
+    });
+  });
+
+  group("getTopRatedTvSeries", () {
+    test("getTopRatedTvSeries", () async {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.topRatedTvSeries + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('{"results": [{"original_title": "BreakingBad", "BreakingBad": "Wonka", "media_type": "series"}]}', 200));
+
+      final result = await homeScreenController.getTopRatedTvSeries(client);
+
+      expect(result, isA<List<MediaModel>>());
+    });
+    test('Error Exception', () {
+      when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.topRatedTvSeries + ApiEndPoints.apiKey)))
+          .thenAnswer((realInvocation) async =>
+          http.Response('Not Found', 404));
+      final result = homeScreenController.getTopRatedTvSeries(client);
+      expect(result, throwsException);
+    });
+  });
+
+  group("getSimilarSeries", (){
     var id = 1234;
-    when(client.get(Uri.parse("${ApiEndPoints.baseUrl}/movie/$id/similar?${ApiEndPoints.apiKey}")))
-        .thenAnswer((realInvocation) async =>
-        http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
+    test("getSimilarSeries", () async {
+      when(client.get(Uri.parse("${ApiEndPoints.baseUrl}/tv/$id/recommendations?${ApiEndPoints.apiKey}")))
+          .thenAnswer((realInvocation) async =>
+          http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
 
-    final result = await homeScreenController.getSimilarMovies(id, client);
+      final result = await homeScreenController.getSimilarSeries(id, client);
 
-    expect(result, isA<List<MediaModel>>());
-  });
-
-  test("getTopRatedTvSeries", () async {
-    when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.topRatedTvSeries + ApiEndPoints.apiKey)))
-        .thenAnswer((realInvocation) async =>
-        http.Response('{"results": [{"original_title": "BreakingBad", "BreakingBad": "Wonka", "media_type": "series"}]}', 200));
-
-    final result = await homeScreenController.getTopRatedTvSeries(client);
-
-    expect(result, isA<List<MediaModel>>());
-  });
-
-  test("getSimilarSeries", () async {
-    var id = 1234;
-    when(client.get(Uri.parse("${ApiEndPoints.baseUrl}/tv/$id/recommendations?${ApiEndPoints.apiKey}")))
-        .thenAnswer((realInvocation) async =>
-        http.Response('{"results": [{"original_title": "Wonka", "title": "Wonka", "media_type": "movie"}]}', 200));
-
-    final result = await homeScreenController.getSimilarSeries(id, client);
-
-    expect(result, isA<List<MediaModel>>());
+      expect(result, isA<List<MediaModel>>());
+    });
+    test('Error Exception', () {
+      when(client.get(Uri.parse("${ApiEndPoints.baseUrl}/tv/$id/recommendations?${ApiEndPoints.apiKey}")))
+          .thenAnswer((realInvocation) async =>
+          http.Response('Not Found', 404));
+      final result = homeScreenController.getSimilarSeries(id, client);
+      expect(result, throwsException);
+    });
   });
 
 });
 
 group("ExploreScreenController", () {
-  final client = MockClient();
-
   test("getSearchResult", () async {
     var query = "one piece";
     when(client.get(Uri.parse("${ApiEndPoints.baseUrl}${ApiEndPoints.apiPath.search}${ApiEndPoints.apiKey}&query=$query")))
