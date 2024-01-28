@@ -92,6 +92,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
+                    key: const Key("DiscordButton"),
                       onPressed: () => _launchUrl(Uri.parse(discord)),
                       iconSize: 30,
                       icon: Icon(Icons.discord_rounded,
@@ -99,6 +100,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         size: 30,)
                   ),
                   IconButton(
+                    key: const Key("WhatsAppButton"),
                       onPressed: () => _launchUrl(Uri.parse(whatsApp)),
                       iconSize: 30,
                       icon:  Icon(FontAwesomeIcons.whatsapp,
@@ -106,6 +108,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         size: 30,)
                   ),
                   IconButton(
+                    key: const Key("TwitterButton"),
                       onPressed: () => _launchUrl(Uri.parse(twitter)),
                       iconSize: 30,
                       icon: Icon(FontAwesomeIcons.twitter,
@@ -113,6 +116,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         size: 30,)
                   ),
                   IconButton(
+                    key: const Key("GitHubButton"),
                       onPressed: () => _launchUrl(Uri.parse(github)),
                       iconSize: 30,
                       icon: Icon(FontAwesomeIcons.github,
