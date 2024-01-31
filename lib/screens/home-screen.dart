@@ -118,12 +118,12 @@ class _BuildScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary
                     ),),
-                    Text('See all', style: TextStyle(
-                        fontFamily: GoogleFonts.rubik().fontFamily,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colours.palletBlue
-                    ),),
+                    // Text('See all', style: TextStyle(
+                    //     fontFamily: GoogleFonts.rubik().fontFamily,
+                    //     fontSize: 13,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colours.palletBlue
+                    // ),),
                   ],
                 ),
               ),
@@ -162,12 +162,12 @@ class _BuildScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary
                     ),),
-                    Text('See all', style: TextStyle(
-                        fontFamily: GoogleFonts.rubik().fontFamily,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colours.palletBlue
-                    ),),
+                    // Text('See all', style: TextStyle(
+                    //     fontFamily: GoogleFonts.rubik().fontFamily,
+                    //     fontSize: 13,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colours.palletBlue
+                    // ),),
                   ],
                 ),
               ),
@@ -203,12 +203,12 @@ class _BuildScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary
                     ),),
-                    Text('See all', style: TextStyle(
-                        fontFamily: GoogleFonts.rubik().fontFamily,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colours.palletBlue
-                    ),),
+                    // Text('See all', style: TextStyle(
+                    //     fontFamily: GoogleFonts.rubik().fontFamily,
+                    //     fontSize: 13,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colours.palletBlue
+                    // ),),
                   ],
                 ),
               ),
