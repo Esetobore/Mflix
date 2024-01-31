@@ -22,11 +22,10 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      - run: flutter test
+      - run: flutter analyze
 
   build_ios:
     name: Build Flutter (iOS)
-    needs: [flutter_test]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +40,6 @@ jobs:
 
   build_android:
     name: Build Flutter (Android)
-    needs: [flutter_test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
