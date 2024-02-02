@@ -40,7 +40,14 @@ jobs:
           channel: "stable"
       - run: echo "API_KEY=${{ secrets.API_KEY }}" >> .env
       - run: flutter pub get
-      - run: flutter build ios --release --no-codesign
+      - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
 
   build_apk:
     name: Build Flutter (Android)
