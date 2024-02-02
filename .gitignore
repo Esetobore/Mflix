@@ -28,12 +28,10 @@ migrate_working_dir/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
+.env
 .pub-cache/
 .pub/
 /build/
-
-# Flutter Api File
-/lib/utils/api-endpoint.dart
 
 # Symbolication related
 app.*.symbols

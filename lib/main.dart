@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mflix/controller/home-screen-controller.dart';
-import 'package:mflix/screens/explore-screen.dart';
-import 'package:mflix/screens/home-screen.dart';
+import 'package:mflix/utils/dotenv.dart';
 import 'package:mflix/widgets/navbar-screen.dart';
 import 'package:mflix/utils/theme.dart';
 
 
-main() async {
-  runApp( MyApp());
+Future<void> main() async {
+  Dotenv.load();
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({
+  const MyApp({
     super.key,
   });
 

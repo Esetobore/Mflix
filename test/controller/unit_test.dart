@@ -7,6 +7,7 @@ import 'package:mflix/models/media-model.dart';
 import 'package:mflix/screens/explore-screen.dart';
 import 'package:mflix/sql_helper.dart';
 import 'package:mflix/utils/api-endpoint.dart';
+import 'package:mflix/utils/dotenv.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'unit_test.mocks.dart';
@@ -21,6 +22,7 @@ void main() {
 
   setUp(() {
     client = MockClient();
+    Dotenv.load();
   });
 
 group("BookmarkController", () {
@@ -31,6 +33,7 @@ group("BookmarkController", () {
   });
 
 group("HomeScreenController", () {
+
   group("Trending Movies Day", (){
     test("Trending Movies Day", () async {
       when(client.get(Uri.parse(ApiEndPoints.baseUrl + ApiEndPoints.apiPath.trendingMoviesDay + ApiEndPoints.apiKey)))
